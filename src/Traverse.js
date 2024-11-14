@@ -28,25 +28,25 @@ function createTraverse (X3D)
          const seen = new Set ()
 
          if (object instanceof X3D .X3DExecutionContext)
-            yield* this .traverseScene (object, flags, seen);
+            yield* this .#traverseScene (object, flags, seen);
 
          if (object instanceof X3D .ExternProtoDeclarationArray)
-            yield* this .traverseNodes (object, flags, seen);
+            yield* this .#traverseNodes (object, flags, seen);
 
          if (object instanceof X3D .ProtoDeclarationArray)
-            yield* this .traverseNodes (object, flags, seen);
+            yield* this .#traverseNodes (object, flags, seen);
 
          if (object instanceof X3D .SFNode)
-            yield* this .traverseNode (object .getValue (), flags, seen);
+            yield* this .#traverseNode (object .getValue (), flags, seen);
 
          if (object instanceof X3D .MFNode || Array .isArray (object))
-            yield* this .traverseNodes (object, flags, seen);
+            yield* this .#traverseNodes (object, flags, seen);
 
          if (object instanceof X3D .X3DBaseNode)
-            yield* this .traverseNode (object, flags, seen);
+            yield* this .#traverseNode (object, flags, seen);
       }
 
-      static *traverseScene (executionContext, flags, seen)
+      static *#traverseScene (executionContext, flags, seen)
       {
          if (!executionContext)
             return true;
@@ -54,34 +54,34 @@ function createTraverse (X3D)
          if (flags & Traverse .EXTERNPROTO_DECLARATIONS)
          {
             for (const externproto of executionContext .externprotos)
-               yield* this .traverseNode (externproto, flags, seen);
+               yield* this .#traverseNode (externproto, flags, seen);
          }
 
          if (flags & Traverse .PROTO_DECLARATIONS)
          {
             for (const proto of executionContext .protos)
-               yield* this .traverseNode (proto, flags, seen);
+               yield* this .#traverseNode (proto, flags, seen);
          }
 
          if (flags & Traverse .ROOT_NODES)
          {
-            yield* this .traverseNodes (executionContext .rootNodes, flags, seen);
+            yield* this .#traverseNodes (executionContext .rootNodes, flags, seen);
          }
 
          yield executionContext;
       }
 
-      static *traverseNodes (nodes, flags, seen)
+      static *#traverseNodes (nodes, flags, seen)
       {
          for (const node of nodes)
          {
-            yield* this .traverseNode (node instanceof X3D .SFNode ? node .getValue () : node, flags, seen);
+            yield* this .#traverseNode (node instanceof X3D .SFNode ? node .getValue () : node, flags, seen);
          }
 
          return true;
       }
 
-      static *traverseNode (node, flags, seen)
+      static *#traverseNode (node, flags, seen)
       {
          if (!node)
             return;
@@ -91,8 +91,8 @@ function createTraverse (X3D)
 
          seen .add (node);
 
-         yield* this .traverseFields (node .getUserDefinedFields (), flags, seen);
-         yield* this .traverseFields (node .getPredefinedFields (),  flags, seen);
+         yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
+         yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
 
          const type = node .getType ();
 
@@ -104,7 +104,7 @@ function createTraverse (X3D)
                {
                   if (flags & this .EXTERNPROTO_DECLARATION_SCENE)
                   {
-                     yield* this .traverseScene (node .getInternalScene (), flags, seen);
+                     yield* this .#traverseScene (node .getInternalScene (), flags, seen);
                   }
 
                   break;
@@ -113,7 +113,7 @@ function createTraverse (X3D)
                {
                   if (flags & Traverse .PROTO_DECLARATION_BODY)
                   {
-                     yield* this .traverseScene (node .getBody (), flags, seen);
+                     yield* this .#traverseScene (node .getBody (), flags, seen);
                   }
 
                   break;
@@ -122,7 +122,7 @@ function createTraverse (X3D)
                {
                   if (flags & Traverse .PROTOTYPE_INSTANCES)
                   {
-                     yield* this .traverseScene (node .getBody (), flags, seen);
+                     yield* this .#traverseScene (node .getBody (), flags, seen);
                   }
 
                   break;
@@ -131,7 +131,7 @@ function createTraverse (X3D)
                {
                   if (flags & this .INLINE_SCENE)
                   {
-                     yield* this .traverseScene (node .getInternalScene (), flags, seen);;
+                     yield* this .#traverseScene (node .getInternalScene (), flags, seen);;
                   }
 
                   break;
@@ -148,7 +148,7 @@ function createTraverse (X3D)
          yield X3D .SFNodeCache .get (node);
       }
 
-      static *traverseFields (fields, flags, seen)
+      static *#traverseFields (fields, flags, seen)
       {
          for (const field of fields)
          {
@@ -156,12 +156,12 @@ function createTraverse (X3D)
             {
                case X3D .X3DConstants .SFNode:
                {
-                  yield* this .traverseNode (field .getValue (), flags, seen);;
+                  yield* this .#traverseNode (field .getValue (), flags, seen);;
                   break;
                }
                case X3D .X3DConstants .MFNode:
                {
-                  yield* this .traverseNodes (field, flags, seen);;
+                  yield* this .#traverseNodes (field, flags, seen);;
                   break;
                }
             }
