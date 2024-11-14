@@ -11,7 +11,15 @@ test ("basic", async () =>
    expect (Traverse .NONE) .toBe (0);
 });
 
-test ("traverse", async () =>
+test ("traverse1", async () =>
+{
+   const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
+
+   for (const node of Traverse .traverse (scene .rootNodes))
+      expect (node .getNodeTypeName ()) .not .toHaveLength (0);
+});
+
+test ("traverse2", async () =>
 {
    const names = [
       "WorldInfo",

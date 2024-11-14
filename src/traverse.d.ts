@@ -1,3 +1,5 @@
+import X3D from "x_ite";
+
 export = traverse;
 
 declare function traverse (X3D: typeof X3D): typeof Traverse;
@@ -18,5 +20,47 @@ class Traverse
    /**
     * Traverse object.
     */
-   static *traverse (object: any, flags?: number = 0): Iterable <X3D .SFNode>;
+   static *traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
+}
+
+type TraverseObjects = X3D .X3DScene
+   | X3D .X3DExecutionContext
+   | X3D .ExternProtoDeclarationArray
+   | X3D .ProtoDeclarationArray
+   | X3D .SFNode
+   | X3D .MFNode
+   | Array <X3D .SFNode>;
+
+type TraversedObjects = X3D .X3DScene
+   | X3D .X3DExecutionContext
+   | X3D .X3DExternProtoDeclaration
+   | X3D .X3DProtoDeclaration
+   | X3D .SFNode;
+
+declare module "x_ite"
+{
+   interface X3DExecutionContext
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
+   interface ExternProtoDeclarationArray
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
+   interface ProtoDeclarationArray
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
+   interface SFNode
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
+   interface MFNode
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
 }
