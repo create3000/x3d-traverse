@@ -183,7 +183,9 @@ function createTraverse (X3D)
             break;
          }
 
-         yield X3D .SFNodeCache .get (node);
+         yield node instanceof X3D .X3DNode
+            ? X3D .SFNodeCache .get (node)
+            : node;
       }
 
       static *#traverseFields (fields, flags, seen)
