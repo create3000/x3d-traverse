@@ -53,7 +53,7 @@ function createTraverse (X3D)
        */
       static *traverse (object, flags)
       {
-         const seen = new Set ()
+         const seen = new Set ();
 
          switch (true)
          {
@@ -67,6 +67,8 @@ function createTraverse (X3D)
                yield* this .#traverseNodes (object, flags, seen);
                break;
             case object instanceof X3D .SFNode:
+               yield* this .#traverseNode (object .getValue (), flags, seen);
+               break;
             case object instanceof X3D .X3DBaseNode:
                yield* this .#traverseNode (object, flags, seen);
                break;
