@@ -1,0 +1,23 @@
+{
+  "name": "x3d-traverse",
+  "version": "1.0.0",
+  "description": "Traverse X3D nodes and scenes to filter, process and analyse nodes.",
+  "main": "src/Traverse.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/create3000/x3d-traverse.git"
+  },
+  "author": "Holger Seelig <holger.seelig@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/create3000/x3d-traverse/issues"
+  },
+  "homepage": "https://github.com/create3000/x3d-traverse#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "x_ite": "^10.5.10"
+  }
+}
