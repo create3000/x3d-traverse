@@ -50,6 +50,7 @@ test ("traverse", async () =>
 
    const nodes2 = Array .from (scene .traverse ());
 
+   expect (nodes2) .toHaveLength (12);
    expect (nodes2 .filter (node => node instanceof X3D .X3DScene)) .toHaveLength (1);
 
    expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual ([
