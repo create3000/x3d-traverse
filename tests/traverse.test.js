@@ -1,5 +1,6 @@
 const Traverse = require ("../");
 
-test ("first", () => {
+test ("first", () =>
+{
    expect (Traverse) .toBeInstanceOf (Object);
 });
