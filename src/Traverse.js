@@ -2,6 +2,8 @@ const objects = new WeakMap ();
 
 function createTraverse (X3D)
 {
+   // class Traverse
+
    let flags = 1;
 
    class Traverse
@@ -169,7 +171,7 @@ function createTraverse (X3D)
       }
    }
 
-   objects .set (X3D, Traverse);
+   // Add traverse to classes.
 
    X3D .SFNode .prototype .traverse = function* (flags)
    {
@@ -195,6 +197,10 @@ function createTraverse (X3D)
    {
       yield* Traverse .traverse (this, flags);
    };
+
+   // Finish
+
+   objects .set (X3D, Traverse);
 
    return Traverse;
 }
