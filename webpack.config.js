@@ -5,12 +5,14 @@ const
 
 module .exports = async () =>
 {
+   const entry = "traverse"; // `src/${entry}.js`;
+
    const targets = [ ];
 
    targets .push ({
       entry: {
-         "traverse": "./src/traverse.js",
-         "traverse.min": "./src/traverse.js",
+         [`${entry}`]: `./src/${entry}.js`,
+         [`${entry}.min`]: `./src/${entry}.js`,
       },
       output: {
          path: path .resolve (__dirname, "dist"),
@@ -62,8 +64,8 @@ module .exports = async () =>
 
    targets .push ({
       entry: {
-         "traverse": "./src/traverse.js",
-         "traverse.min": "./src/traverse.js",
+         [`${entry}`]: `./src/${entry}.js`,
+         [`${entry}.min`]: `./src/${entry}.js`,
       },
       output: {
          path: path .resolve (__dirname, "dist"),
