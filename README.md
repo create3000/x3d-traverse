@@ -2,6 +2,23 @@
 
 Traverse X3D nodes and scenes to filter, process and analyze nodes.
 
+## Installation
+
+### Node
+
+```sh
+npm i x3d-traverse
+```
+
+### Browser
+
+```js
+import X3D      from "https://cdn.jsdelivr.net/npm/x_ite@latest/dist/x_ite.min.mjs";
+import traverse from "https://cdn.jsdelivr.net/npm/x3d-traverse@latest/dist/x3d-traverse.mjs";
+
+const Traverse = traverse (X3D);
+```
+
 ## Usage
 
 The package can be used with CJS `require` or with ES6 `import` statement;
