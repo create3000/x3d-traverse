@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Traverse X3D nodes and scenes to filter, process and analyse nodes.",
   "main": "src/Traverse.js",
+  "files": [
+    "src/*"
+  ],
   "scripts": {
     "test": "jest"
   },
