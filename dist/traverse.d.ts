@@ -1,6 +1,6 @@
 export = traverse;
 
-declare function traverse(X3D: typeof X3D): typeof Traverse;
+declare function traverse (X3D: typeof X3D): typeof Traverse;
 
 class Traverse
 {
