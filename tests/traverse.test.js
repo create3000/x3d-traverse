@@ -13,6 +13,20 @@ test ("basic", async () =>
 
 test ("traverse", async () =>
 {
+   const names = [
+      "WorldInfo",
+      "NavigationInfo",
+      "Background",
+      "Viewpoint",
+      "Material",
+      "ImageTexture",
+      "TextureTransform",
+      "Appearance",
+      "Box",
+      "Shape",
+      "Transform",
+   ];
+
    const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
 
    expect (scene .rootNodes) .not .toHaveLength (0);
@@ -33,37 +47,11 @@ test ("traverse", async () =>
    expect (nodes1 .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .ImageTexture)) .toHaveLength (1);
    expect (nodes1 .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .TextureTransform)) .toHaveLength (1);
    expect (nodes1 .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .Box)) .toHaveLength (1);
-
-   expect (nodes1 .map (node => node .getNodeTypeName ())) .toEqual ([
-      "WorldInfo",
-      "NavigationInfo",
-      "Background",
-      "Viewpoint",
-      "Material",
-      "ImageTexture",
-      "TextureTransform",
-      "Appearance",
-      "Box",
-      "Shape",
-      "Transform",
-   ]);
+   expect (nodes1 .map (node => node .getNodeTypeName ())) .toEqual (names);
 
    const nodes2 = Array .from (scene .traverse ());
 
    expect (nodes2) .toHaveLength (12);
    expect (nodes2 .filter (node => node instanceof X3D .X3DScene)) .toHaveLength (1);
-
-   expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual ([
-      "WorldInfo",
-      "NavigationInfo",
-      "Background",
-      "Viewpoint",
-      "Material",
-      "ImageTexture",
-      "TextureTransform",
-      "Appearance",
-      "Box",
-      "Shape",
-      "Transform",
-   ]);
+   expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual (names);
 });
