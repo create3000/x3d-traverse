@@ -9,7 +9,7 @@ test ("first", async () =>
    expect (Traverse) .toBeInstanceOf (Object);
 });
 
-test ("MFNode", async () =>
+test ("traverse", async () =>
 {
    const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
 
