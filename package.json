@@ -1,7 +1,7 @@
 {
   "name": "x3d-traverse",
   "version": "1.0.0",
-  "description": "Traverse X3D nodes and scenes to filter, process and analyse nodes.",
+  "description": "Traverse X3D nodes and scenes to filter, process and analyze nodes.",
   "main": "dist/traverse.js",
   "module": "dist/traverse.mjs",
   "exports": {
@@ -22,6 +22,16 @@
     "type": "git",
     "url": "git+https://github.com/create3000/x3d-traverse.git"
   },
+  "keywords": [
+    "3D",
+    "Browser",
+    "JavaScript",
+    "Node",
+    "VRML",
+    "x_ite",
+    "X3D",
+    "XML"
+  ],
   "author": "Holger Seelig <holger.seelig@gmail.com>",
   "license": "GPL-3.0",
   "bugs": {

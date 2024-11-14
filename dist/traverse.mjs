@@ -28,6 +28,8 @@ const objects = new WeakMap ();
 
 function createTraverse (X3D)
 {
+   // class Traverse
+
    let flags = 1;
 
    class Traverse
@@ -56,26 +58,26 @@ function createTraverse (X3D)
          if (object instanceof X3D .X3DExecutionContext)
             yield* this .#traverseScene (object, flags, seen);
 
-         if (object instanceof X3D .ExternProtoDeclarationArray)
+         else if (object instanceof X3D .ExternProtoDeclarationArray)
             yield* this .#traverseNodes (object, flags, seen);
 
-         if (object instanceof X3D .ProtoDeclarationArray)
+         else if (object instanceof X3D .ProtoDeclarationArray)
             yield* this .#traverseNodes (object, flags, seen);
 
-         if (object instanceof X3D .SFNode)
+         else if (object instanceof X3D .SFNode)
             yield* this .#traverseNode (object .getValue (), flags, seen);
 
-         if (object instanceof X3D .MFNode || Array .isArray (object))
+         else if (object instanceof X3D .MFNode || Array .isArray (object))
             yield* this .#traverseNodes (object, flags, seen);
 
-         if (object instanceof X3D .X3DBaseNode)
+         else if (object instanceof X3D .X3DBaseNode)
             yield* this .#traverseNode (object, flags, seen);
       }
 
       static *#traverseScene (executionContext, flags, seen)
       {
          if (!executionContext)
-            return true;
+            return;
 
          if (flags & Traverse .EXTERNPROTO_DECLARATIONS)
          {
@@ -103,8 +105,6 @@ function createTraverse (X3D)
          {
             yield* this .#traverseNode (node instanceof X3D .SFNode ? node .getValue () : node, flags, seen);
          }
-
-         return true;
       }
 
       static *#traverseNode (node, flags, seen)
@@ -195,7 +195,7 @@ function createTraverse (X3D)
       }
    }
 
-   objects .set (X3D, Traverse);
+   // Add traverse to classes.
 
    X3D .SFNode .prototype .traverse = function* (flags)
    {
@@ -207,7 +207,7 @@ function createTraverse (X3D)
       yield* Traverse .traverse (this, flags);
    };
 
-   X3D .X3DExecutionContext .prototype .traverse = function* (flags)
+   X3D .X3DExecutionContext .prototype .traverse = function* (flags = Traverse .ROOT_NODES)
    {
       yield* Traverse .traverse (this, flags);
    };
@@ -221,6 +221,10 @@ function createTraverse (X3D)
    {
       yield* Traverse .traverse (this, flags);
    };
+
+   // Finish
+
+   objects .set (X3D, Traverse);
 
    return Traverse;
 }
