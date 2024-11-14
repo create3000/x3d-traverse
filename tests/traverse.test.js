@@ -31,4 +31,18 @@ test ("MFNode", async () =>
    expect (nodes .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .ImageTexture)) .toHaveLength (1);
    expect (nodes .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .TextureTransform)) .toHaveLength (1);
    expect (nodes .filter (node => node .getNodeType () .at (-1) === X3D .X3DConstants .Box)) .toHaveLength (1);
+
+   expect (nodes .map (node => node .getNodeTypeName ())) .toEqual ([
+      "WorldInfo",
+      "NavigationInfo",
+      "Background",
+      "Viewpoint",
+      "Material",
+      "ImageTexture",
+      "TextureTransform",
+      "Appearance",
+      "Box",
+      "Shape",
+      "Transform",
+   ]);
 });
