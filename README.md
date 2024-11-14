@@ -13,10 +13,7 @@ npm i x3d-traverse
 ### Browser
 
 ```js
-import X3D      from "https://cdn.jsdelivr.net/npm/x_ite@latest/dist/x_ite.min.mjs";
 import traverse from "https://cdn.jsdelivr.net/npm/x3d-traverse@latest/dist/x3d-traverse.mjs";
-
-const Traverse = traverse (X3D);
 ```
 
 ## Usage
