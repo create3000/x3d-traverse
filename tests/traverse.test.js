@@ -7,6 +7,7 @@ const { browser } = X3D .createBrowser ();
 test ("first", async () =>
 {
    expect (Traverse) .toBeInstanceOf (Object);
+   expect (Traverse) .toBe (require ("../") (X3D));
 });
 
 test ("traverse", async () =>
