@@ -37,6 +37,8 @@ type TraversedObjects = X3D .X3DScene
    | X3D .X3DProtoDeclaration
    | X3D .SFNode;
 
+// Augmenting the type definition for X3D namespace:
+
 declare module "x_ite"
 {
    interface X3DExecutionContext
