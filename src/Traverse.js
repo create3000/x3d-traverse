@@ -27,7 +27,7 @@ function createTraverse (X3D)
        */
       static *traverse (object, flags)
       {
-         const seen = new Set ()
+         const seen = new Set ();
 
          switch (true)
          {
