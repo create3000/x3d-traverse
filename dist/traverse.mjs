@@ -55,23 +55,22 @@ function createTraverse (X3D)
       {
          const seen = new Set ()
 
-         if (object instanceof X3D .X3DExecutionContext)
-            yield* this .#traverseScene (object, flags, seen);
-
-         else if (object instanceof X3D .ExternProtoDeclarationArray)
-            yield* this .#traverseNodes (object, flags, seen);
-
-         else if (object instanceof X3D .ProtoDeclarationArray)
-            yield* this .#traverseNodes (object, flags, seen);
-
-         else if (object instanceof X3D .SFNode)
-            yield* this .#traverseNode (object .getValue (), flags, seen);
-
-         else if (object instanceof X3D .MFNode || Array .isArray (object))
-            yield* this .#traverseNodes (object, flags, seen);
-
-         else if (object instanceof X3D .X3DBaseNode)
-            yield* this .#traverseNode (object, flags, seen);
+         switch (true)
+         {
+            case object instanceof X3D .X3DExecutionContext:
+               yield* this .#traverseScene (object, flags, seen);
+               break;
+            case object instanceof X3D .ExternProtoDeclarationArray:
+            case object instanceof X3D .ProtoDeclarationArray:
+            case object instanceof X3D .MFNode:
+            case Array .isArray (object):
+               yield* this .#traverseNodes (object, flags, seen);
+               break;
+            case object instanceof X3D .SFNode:
+            case object instanceof X3D .X3DBaseNode:
+               yield* this .#traverseNode (object, flags, seen);
+               break;
+         }
       }
 
       static *#traverseScene (executionContext, flags, seen)
