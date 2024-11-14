@@ -5,6 +5,7 @@ const { systemSync } = require ("shell-tools");
 
 function main ()
 {
+   systemSync (`cp src/traverse.d.ts dist/`);
    systemSync (`npx webpack`);
 }
 
