@@ -4,10 +4,11 @@ const
 
 const { browser } = X3D .createBrowser ();
 
-test ("first", async () =>
+test ("basic", async () =>
 {
    expect (Traverse) .toBeInstanceOf (Object);
    expect (Traverse) .toBe (require ("../") (X3D));
+   expect (Traverse .NONE) .toBe (0);
 });
 
 test ("traverse", async () =>
