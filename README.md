@@ -29,7 +29,7 @@ const canvas   = X3D .createBrowser ();
 const browser  = canvas .browser;
 const scene    = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
 
-// Traverse all root nodes and its successor.
+// Traverse all root nodes and its successors.
 for (const node of scene .rootNodes .traverse ())
    console .log (node .getNodeTypeName ());
 ```
