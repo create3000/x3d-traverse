@@ -25,7 +25,7 @@ function createTraverse (X3D)
        * @param {number} flags
        * @returns boolean
        */
-      static traverse (object, flags)
+      static traverse (object, flags = this .NONE)
       {
          const seen = new Set ();
 
@@ -167,7 +167,7 @@ function createTraverse (X3D)
          }
       }
 
-      static find (scene, object, flags)
+      static find (scene, object, flags = this .NONE)
       {
          const
             hierarchy = [ ],
@@ -356,17 +356,22 @@ function createTraverse (X3D)
 
    // Add traverse to classes.
 
-   X3D .SFNode .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .MFNode .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
    X3D .X3DExecutionContext .prototype .traverse = function (flags = Traverse .ROOT_NODES)
+   {
+      return Traverse .traverse (this, flags);
+   };
+
+   X3D .X3DExternProtoDeclaration .prototype .traverse = function (flags)
+   {
+      return Traverse .traverse (this, flags);
+   };
+
+   X3D .X3DProtoDeclaration .prototype .traverse = function (flags)
+   {
+      return Traverse .traverse (this, flags);
+   };
+
+   X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags = Traverse .EXTERNPROTO_DECLARATIONS)
    {
       return Traverse .traverse (this, flags);
    };
@@ -376,7 +381,12 @@ function createTraverse (X3D)
       return Traverse .traverse (this, flags);
    };
 
-   X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags = Traverse .EXTERNPROTO_DECLARATIONS)
+   X3D .SFNode .prototype .traverse = function (flags)
+   {
+      return Traverse .traverse (this, flags);
+   };
+
+   X3D .MFNode .prototype .traverse = function (flags)
    {
       return Traverse .traverse (this, flags);
    };

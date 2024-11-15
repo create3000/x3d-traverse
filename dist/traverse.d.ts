@@ -30,6 +30,8 @@ class Traverse
 
 type TraverseObjects = X3D .X3DScene
    | X3D .X3DExecutionContext
+   | X3D .X3DExternProtoDeclaration
+   | X3D .X3DProtoDeclaration
    | X3D .ExternProtoDeclarationArray
    | X3D .ProtoDeclarationArray
    | X3D .SFNode
@@ -66,6 +68,16 @@ declare module "x_ite"
    {
       traverse (flags?: number): Iterable <TraversedObjects>;
       find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;
+   }
+
+   interface X3DExternProtoDeclaration
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
+   interface X3DProtoDeclaration
+   {
+      traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface ExternProtoDeclarationArray
