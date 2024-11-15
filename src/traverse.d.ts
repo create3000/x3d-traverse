@@ -21,6 +21,11 @@ class Traverse
     * Traverse object.
     */
    static *traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
+
+   /**
+    * Find all occurrences of object and return all hierarchies.
+    */
+   static find (scene: X3D .X3DScene, object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;
 }
 
 type TraverseObjects = X3D .X3DScene
@@ -37,6 +42,22 @@ type TraversedObjects = X3D .X3DScene
    | X3D .X3DProtoDeclaration
    | X3D .SFNode;
 
+type FindObjects = X3D .X3DScene
+   | X3D .X3DExecutionContext
+   | X3D .X3DExternProtoDeclaration
+   | X3D .X3DProtoDeclaration
+   | X3D .X3DField
+   | X3D .X3DBaseNode
+   | X3D .X3DImportedNode;
+
+type FoundObjects = X3D .X3DScene
+   | X3D .X3DExecutionContext
+   | X3D .X3DExternProtoDeclaration
+   | X3D .X3DProtoDeclaration
+   | X3D .X3DField
+   | X3D .X3DBaseNode
+   | X3D .X3DImportedNode;
+
 // Augmenting the type definition for X3D namespace:
 
 declare module "x_ite"
@@ -44,6 +65,7 @@ declare module "x_ite"
    interface X3DExecutionContext
    {
       traverse (flags?: number): Iterable <TraversedObjects>;
+      find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;
    }
 
    interface ExternProtoDeclarationArray

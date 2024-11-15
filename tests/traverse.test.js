@@ -63,3 +63,15 @@ test ("traverse2", async () =>
    expect (nodes2 .filter (node => node instanceof X3D .X3DScene)) .toHaveLength (1);
    expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual (names);
 });
+
+test ("find1", async () =>
+{
+   const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
+
+   const appearanceNode = scene .rootNodes .at (-1) .children [0] .appearance;
+   const hierarchies    = Array .from (scene .find (appearanceNode .getValue ()));
+
+   expect (hierarchies) .toHaveLength (1);
+   expect (hierarchies [0]) .toBeInstanceOf (Array);
+   expect (hierarchies [0]) .toHaveLength (6);
+});
