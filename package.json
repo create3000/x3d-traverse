@@ -16,6 +16,9 @@
   ],
   "scripts": {
     "dist": "node build/dist.js",
+    "prerelease": "npm run dist",
+    "release": "node/build/release.js",
+    "pretest": "npm run dist",
     "test": "jest"
   },
   "repository": {
