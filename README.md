@@ -74,11 +74,18 @@ There is a method `find` on some nodes listed here:
 ### find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>
 
 Traverse all objects and its successors. Returns an array of all paths of the object to be found.
+
 The parameter *object can be of type:
 
 * `X3DScene`
 * `X3DExecutionContext`
-* `X3DExternProto`
+* `X3DExternProtoDeclaration`
+* `X3DProtoDeclaration`
+* `X3DImportedNode`
+* `X3DField`
+* `SFNode`
+
+The array of found objects contains a list with the `X3DExecutionContext`, the `X3DField` name, maybe the index in the `X3DArrayField`, the `SFNode`, and then everything repeats with the X3DField name.
 
 ## See Also
 
