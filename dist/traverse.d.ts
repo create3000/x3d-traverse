@@ -50,6 +50,7 @@ type FindObjects = X3D .X3DScene
    | X3D .X3DProtoDeclaration
    | X3D .X3DImportedNode
    | X3D .X3DField
+   | X3D .SFNode
    | X3D .X3DBaseNode;
 
 type FoundObjects = X3D .X3DScene
