@@ -64,6 +64,16 @@ There is a method `traverse` on some nodes listed here:
 
 Traverse all objects and its successors. Return every node on its way through the scene graph tree.
 
+The *flags* parameter is a number `or`ed, for instance like this: `Traverse .ROOT_NODES | Traverse .PROTO_DECLARATIONS`.
+
+The return value is an iterator with all traversed object, which can be of type:
+
+* `X3DScene`
+* `X3DExecutionContext`
+* `X3DExternProtoDeclaration`
+* `X3DProtoDeclaration`
+* `SFNode`
+
 ## Find
 
 There is a method `find` on some nodes listed here:
@@ -84,6 +94,8 @@ The parameter *object can be of type:
 * `X3DImportedNode`
 * `X3DField`
 * `SFNode`
+
+The *flags* parameter is a number `or`ed, for instance like this: `Traverse .ROOT_NODES | Traverse .PROTO_DECLARATIONS`.
 
 The array of found objects contains a list with the `X3DExecutionContext`, the `X3DField` name, maybe the index in the `X3DArrayField`, the `SFNode`, and then everything repeats with the X3DField name.
 
