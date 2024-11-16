@@ -1,6 +1,8 @@
 const
    X3D      = require ("x_ite-node"),
-   Traverse = require ("../") (X3D);
+   Traverse = require ("../") (X3D),
+   path     = require ("path"),
+   url      = require ("url");
 
 const { browser } = X3D .createBrowser ();
 
@@ -13,7 +15,7 @@ test ("basic", async () =>
 
 test ("traverse1", async () =>
 {
-   const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
+   const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
    for (const node of Traverse .traverse (scene .rootNodes))
       expect (node .getNodeTypeName ()) .not .toHaveLength (0);
@@ -35,7 +37,7 @@ test ("traverse2", async () =>
       "Transform",
    ];
 
-   const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
+   const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
    expect (scene .rootNodes) .not .toHaveLength (0);
 
@@ -66,7 +68,7 @@ test ("traverse2", async () =>
 
 test ("find1", async () =>
 {
-   const scene = await browser .createX3DFromURL (new X3D .MFString ("https://create3000.github.io/media/examples/Geometry3D/Box/Box.x3d"));
+   const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
    const appearanceNode = scene .rootNodes .at (-1) .children [0] .appearance;
    const hierarchies1   = Array .from (scene .find (appearanceNode));
@@ -109,5 +111,4 @@ test ("find1", async () =>
    expect (hierarchies2 [0] [8] .getNodeTypeName ()) .toBe ("Appearance");
    expect (hierarchies2 [0] [8]) .toBe (appearanceNode);
    expect (hierarchies2 [0] [9]) .toBe ("material");
-
 });
