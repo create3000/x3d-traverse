@@ -48,17 +48,18 @@ type FindObjects = X3D .X3DScene
    | X3D .X3DExecutionContext
    | X3D .X3DExternProtoDeclaration
    | X3D .X3DProtoDeclaration
+   | X3D .X3DImportedNode
    | X3D .X3DField
-   | X3D .X3DBaseNode
-   | X3D .X3DImportedNode;
+   | X3D .X3DBaseNode;
 
 type FoundObjects = X3D .X3DScene
    | X3D .X3DExecutionContext
    | X3D .X3DExternProtoDeclaration
    | X3D .X3DProtoDeclaration
-   | X3D .X3DField
-   | X3D .X3DBaseNode
-   | X3D .X3DImportedNode;
+   | X3D .X3DImportedNode
+   | string
+   | number
+   | X3D .SFNode;
 
 // Augmenting the type definition for X3D namespace:
 
