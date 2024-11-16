@@ -13,7 +13,7 @@ test ("basic", async () =>
    expect (Traverse .NONE) .toBe (0);
 });
 
-test ("traverse1", async () =>
+test ("Traverse.traverse", async () =>
 {
    const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
@@ -21,7 +21,7 @@ test ("traverse1", async () =>
       expect (node .getNodeTypeName ()) .not .toHaveLength (0);
 });
 
-test ("traverse2", async () =>
+test ("MFNode.traverse", async () =>
 {
    const names = [
       "WorldInfo",
@@ -66,49 +66,55 @@ test ("traverse2", async () =>
    expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual (names);
 });
 
-test ("find1", async () =>
+test ("X3DScene.find node", async () =>
 {
    const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
    const appearanceNode = scene .rootNodes .at (-1) .children [0] .appearance;
-   const hierarchies1   = Array .from (scene .find (appearanceNode));
+   const hierarchies    = Array .from (scene .find (appearanceNode));
 
-   expect (hierarchies1) .toHaveLength (1);
-   expect (hierarchies1 [0]) .toBeInstanceOf (Array);
-   expect (hierarchies1 [0]) .toHaveLength (9);
+   expect (hierarchies) .toHaveLength (1);
+   expect (hierarchies [0]) .toBeInstanceOf (Array);
+   expect (hierarchies [0]) .toHaveLength (9);
 
-   expect (hierarchies1 [0] [0]) .toBe (scene);
-   expect (hierarchies1 [0] [1]) .toBe ("rootNodes");
-   expect (hierarchies1 [0] [2]) .toBe (4);
-   expect (hierarchies1 [0] [3]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies1 [0] [3] .getNodeTypeName ()) .toBe ("Transform");
-   expect (hierarchies1 [0] [4]) .toBe ("children");
-   expect (hierarchies1 [0] [5]) .toBe (0);
-   expect (hierarchies1 [0] [6]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies1 [0] [6] .getNodeTypeName ()) .toBe ("Shape");
-   expect (hierarchies1 [0] [7]) .toBe ("appearance");
-   expect (hierarchies1 [0] [8]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies1 [0] [8] .getNodeTypeName ()) .toBe ("Appearance");
-   expect (hierarchies1 [0] [8]) .toBe (appearanceNode);
+   expect (hierarchies [0] [0]) .toBe (scene);
+   expect (hierarchies [0] [1]) .toBe ("rootNodes");
+   expect (hierarchies [0] [2]) .toBe (4);
+   expect (hierarchies [0] [3]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [3] .getNodeTypeName ()) .toBe ("Transform");
+   expect (hierarchies [0] [4]) .toBe ("children");
+   expect (hierarchies [0] [5]) .toBe (0);
+   expect (hierarchies [0] [6]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [6] .getNodeTypeName ()) .toBe ("Shape");
+   expect (hierarchies [0] [7]) .toBe ("appearance");
+   expect (hierarchies [0] [8]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [8] .getNodeTypeName ()) .toBe ("Appearance");
+   expect (hierarchies [0] [8]) .toBe (appearanceNode);
+});
 
-   const hierarchies2 = Array .from (scene .find (appearanceNode .getField ("material")));
+test ("X3DScene.find field", async () =>
+{
+   const scene = await browser .createX3DFromURL (new X3D .MFString (url .pathToFileURL (path .join (__dirname, "files/Box/Box.x3d"))));
 
-   expect (hierarchies2) .toHaveLength (1);
-   expect (hierarchies2 [0]) .toBeInstanceOf (Array);
-   expect (hierarchies2 [0]) .toHaveLength (10);
+   const appearanceNode = scene .rootNodes .at (-1) .children [0] .appearance;
+   const hierarchies    = Array .from (scene .find (appearanceNode .getField ("material")));
 
-   expect (hierarchies2 [0] [0]) .toBe (scene);
-   expect (hierarchies2 [0] [1]) .toBe ("rootNodes");
-   expect (hierarchies2 [0] [2]) .toBe (4);
-   expect (hierarchies2 [0] [3]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies2 [0] [3] .getNodeTypeName ()) .toBe ("Transform");
-   expect (hierarchies2 [0] [4]) .toBe ("children");
-   expect (hierarchies2 [0] [5]) .toBe (0);
-   expect (hierarchies2 [0] [6]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies2 [0] [6] .getNodeTypeName ()) .toBe ("Shape");
-   expect (hierarchies2 [0] [7]) .toBe ("appearance");
-   expect (hierarchies2 [0] [8]) .toBeInstanceOf (X3D .SFNode);
-   expect (hierarchies2 [0] [8] .getNodeTypeName ()) .toBe ("Appearance");
-   expect (hierarchies2 [0] [8]) .toBe (appearanceNode);
-   expect (hierarchies2 [0] [9]) .toBe ("material");
+   expect (hierarchies) .toHaveLength (1);
+   expect (hierarchies [0]) .toBeInstanceOf (Array);
+   expect (hierarchies [0]) .toHaveLength (10);
+
+   expect (hierarchies [0] [0]) .toBe (scene);
+   expect (hierarchies [0] [1]) .toBe ("rootNodes");
+   expect (hierarchies [0] [2]) .toBe (4);
+   expect (hierarchies [0] [3]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [3] .getNodeTypeName ()) .toBe ("Transform");
+   expect (hierarchies [0] [4]) .toBe ("children");
+   expect (hierarchies [0] [5]) .toBe (0);
+   expect (hierarchies [0] [6]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [6] .getNodeTypeName ()) .toBe ("Shape");
+   expect (hierarchies [0] [7]) .toBe ("appearance");
+   expect (hierarchies [0] [8]) .toBeInstanceOf (X3D .SFNode);
+   expect (hierarchies [0] [8] .getNodeTypeName ()) .toBe ("Appearance");
+   expect (hierarchies [0] [8]) .toBe (appearanceNode);
+   expect (hierarchies [0] [9]) .toBe ("material");
 });
