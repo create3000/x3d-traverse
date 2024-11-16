@@ -75,6 +75,7 @@ declare module "x_ite"
        * Traverse object and return all nodes.
        */
       traverse (flags?: number): Iterable <TraversedObjects>;
+
       /**
        * Find all occurrences of object and return all hierarchies.
        */
