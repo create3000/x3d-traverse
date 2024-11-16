@@ -4,6 +4,9 @@ export = traverse;
 
 declare function traverse (X3D: typeof X3D): typeof Traverse;
 
+/**
+ * Static class Traverse to traverse a X3D scene-graph.
+ */
 class Traverse
 {
    static readonly NONE: number;
@@ -18,7 +21,7 @@ class Traverse
    static readonly ALL: number;
 
    /**
-    * Traverse object.
+    * Traverse object and return all nodes.
     */
    static *traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
 
@@ -68,37 +71,61 @@ declare module "x_ite"
 {
    interface X3DExecutionContext
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
+      /**
+       * Find all occurrences of object and return all hierarchies.
+       */
       find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;
    }
 
    interface X3DExternProtoDeclaration
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface X3DProtoDeclaration
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface ExternProtoDeclarationArray
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface ProtoDeclarationArray
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface SFNode
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
    interface MFNode
    {
+      /**
+       * Traverse object and return all nodes.
+       */
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 }
