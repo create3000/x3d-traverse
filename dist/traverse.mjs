@@ -199,6 +199,12 @@ function createTraverse (X3D)
             hierarchy = [ ],
             seen      = new Set ();
 
+         if (object instanceof X3D .SFNode)
+         {
+            if (object === X3D .SFNodeCache .get (object .getValue ()))
+               object = object .getValue ();
+         }
+
          return this .#findInScene (scene, object, flags, hierarchy, seen);
       }
 
@@ -219,36 +225,61 @@ function createTraverse (X3D)
             {
                const externprotos = executionContext .getExternProtoDeclarations ();
 
-               for (const externproto of externprotos)
+               hierarchy .push ("externprotos");
+
+               for (const [i, externproto] of externprotos .entries ())
                {
                   yield* this .#findInNode (externproto, object, flags, hierarchy, seen);
+
+                  hierarchy .pop ();
                }
+
+               hierarchy .pop ();
             }
 
             if (flags & this .PROTO_DECLARATIONS)
             {
                const prototypes = executionContext .getProtoDeclarations ();
 
-               for (const prototype of prototypes)
+               hierarchy .push ("protos");
+
+               for (const [i, prototype] of prototypes .entries ())
                {
+                  hierarchy .push (i);
+
                   yield* this .#findInNode (prototype, object, flags, hierarchy, seen);
+
+                  hierarchy .pop ();
                }
+
+               hierarchy .pop ();
             }
 
             if (flags & this .ROOT_NODES)
             {
                const rootNodes = executionContext .getRootNodes ();
 
-               for (const rootNode of rootNodes)
+               hierarchy .push ("rootNodes");
+
+               for (const [i, rootNode] of rootNodes .entries ())
                {
+                  hierarchy .push (i);
+
                   yield* this .#findInNode (rootNode .getValue (), object, flags, hierarchy, seen);
+
+                  hierarchy .pop ();
                }
+
+               hierarchy .pop ();
             }
 
             if (flags & this .IMPORTED_NODES)
             {
-               for (const importedNode of executionContext .getImportedNodes ())
+               hierarchy .push ("importedNodes");
+
+               for (const [i, importedNode] of executionContext .getImportedNodes () .entries ())
                {
+                  hierarchy .push (i);
                   hierarchy .push (importedNode);
 
                   if (importedNode === object)
@@ -270,7 +301,10 @@ function createTraverse (X3D)
                   }
 
                   hierarchy .pop ();
+                  hierarchy .pop ();
                }
+
+               hierarchy .pop ();
             }
          }
 
@@ -286,7 +320,7 @@ function createTraverse (X3D)
             return;
 
          seen .add (node);
-         hierarchy .push (node);
+         hierarchy .push (node instanceof X3D .X3DNode ? X3D .SFNodeCache .get (node) : node);
 
          if (node .valueOf () === object .valueOf ())
          {
@@ -348,7 +382,7 @@ function createTraverse (X3D)
       {
          for (const field of fields)
          {
-            hierarchy .push (field);
+            hierarchy .push (field .getName ());
 
             if (field === object)
             {
@@ -365,8 +399,14 @@ function createTraverse (X3D)
                   }
                   case X3D .X3DConstants .MFNode:
                   {
-                     for (const node of field)
+                     for (const [i, node] of field .entries ())
+                     {
+                        hierarchy .push (i);
+
                         yield* this .#findInNode (node ?.getValue (), object, flags, hierarchy, seen);
+
+                        hierarchy .pop ();
+                     }
 
                      break;
                   }
