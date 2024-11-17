@@ -29,6 +29,7 @@ function main ()
 	console .log (`New version ${version}`);
 
 	systemSync (`npm i x_ite@latest`);
+	systemSync (`npm i -D x_ite-node@latest`);
 
 	// commit
 	systemSync (`git add -A`);
