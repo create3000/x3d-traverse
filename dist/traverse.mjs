@@ -437,12 +437,12 @@ function createTraverse (X3D)
       return Traverse .traverse (this, flags);
    };
 
-   X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags = Traverse .EXTERNPROTO_DECLARATIONS)
+   X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags)
    {
       return Traverse .traverse (this, flags);
    };
 
-   X3D .ProtoDeclarationArray .prototype .traverse = function (flags = Traverse .PROTO_DECLARATIONS)
+   X3D .ProtoDeclarationArray .prototype .traverse = function (flags)
    {
       return Traverse .traverse (this, flags);
    };
