@@ -98,6 +98,14 @@ declare module "x_ite"
       traverse (flags?: number): Iterable <TraversedObjects>;
    }
 
+   interface NamedNodesArray
+   {
+      /**
+       * Traverse object and return all nodes.
+       */
+      traverse (flags?: number): Iterable <TraversedObjects>;
+   }
+
    interface ExternProtoDeclarationArray
    {
       /**

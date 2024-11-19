@@ -411,6 +411,11 @@ function createTraverse (X3D)
       return Traverse .traverse (this, flags);
    };
 
+   X3D .NamedNodesArray .prototype .traverse = function (flags)
+   {
+      return Traverse .traverse (this, flags);
+   };
+
    X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags)
    {
       return Traverse .traverse (this, flags);

@@ -51,14 +51,15 @@ for (const node of scene .rootNodes .traverse ())
 
 There is a method `traverse` on some nodes listed here:
 
-* `X3DScene.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `X3DExecutionContext.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `X3DExternProtoDeclaration.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `X3DProtoDeclaration.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `ExternProtoDeclarationArray.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `ProtoDeclarationArray.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `SFNode.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
-* `MFNode.prototype.traverse (flags?: number): Iterable <TraversedObjects>`
+* `X3DScene.prototype.traverse`
+* `X3DExecutionContext.prototype.traverse`
+* `X3DExternProtoDeclaration.prototype.traverse`
+* `X3DProtoDeclaration.prototype.traverse`
+* `NamedNodesArray.prototype.traverse`
+* `ExternProtoDeclarationArray.prototype.traverse`
+* `ProtoDeclarationArray.prototype.traverse`
+* `SFNode.prototype.traverse`
+* `MFNode.prototype.traverse`
 
 ### traverse (flags?: number): Iterable <TraversedObjects>
 
@@ -78,8 +79,8 @@ The return value is an iterator with all traversed object, which can be of type:
 
 There is a method `find` on some nodes listed here:
 
-* `X3DScene.prototype.find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;`
-* `X3DExecutionContext.prototype.find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;`
+* `X3DScene.prototype.find`
+* `X3DExecutionContext.prototype.find`
 
 ### find (object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>
 
