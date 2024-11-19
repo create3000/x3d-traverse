@@ -19,12 +19,6 @@ function createTraverse (X3D)
       static INLINE_SCENE                  = flags <<= 1;
       static ALL                           = (flags << 1) - 1;
 
-      /**
-       *
-       * @param {X3DScene|X3DExecutionContext|MFNode|Array<SFNode>|SFNode} object
-       * @param {number} flags
-       * @returns boolean
-       */
       static traverse (object, flags = this .NONE)
       {
          const seen = new Set ();
