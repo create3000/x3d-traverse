@@ -36,7 +36,7 @@ var __webpack_exports__ = {};
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const objects = new WeakMap ();
+const traverses = new WeakMap ();
 
 function createTraverse (X3D)
 {
@@ -57,12 +57,6 @@ function createTraverse (X3D)
       static INLINE_SCENE                  = flags <<= 1;
       static ALL                           = (flags << 1) - 1;
 
-      /**
-       *
-       * @param {X3DScene|X3DExecutionContext|MFNode|Array<SFNode>|SFNode} object
-       * @param {number} flags
-       * @returns boolean
-       */
       static traverse (object, flags = this .NONE)
       {
          const seen = new Set ();
@@ -484,14 +478,14 @@ function createTraverse (X3D)
 
    // Finish
 
-   objects .set (X3D, Traverse);
+   traverses .set (X3D, Traverse);
 
    return Traverse;
 }
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(X3D)
 {
-   return objects .get (X3D) ?? createTraverse (X3D);
+   return traverses .get (X3D) ?? createTraverse (X3D);
 };
 
 __webpack_exports__ = __webpack_exports__["default"];
