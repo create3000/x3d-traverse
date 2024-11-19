@@ -75,6 +75,20 @@ The return value is an iterator with all traversed object, which can be of type:
 * `X3DProtoDeclaration`
 * `SFNode`
 
+### Traverse.traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>
+
+There is also a method `Traverse.traverse` with an additional first argument `object`, which can be of type:
+
+* X3DExecutionContext
+* NamedNodesArray
+* ExternProtoDeclarationArray
+* ProtoDeclarationArray
+* MFNode
+* Array <SFNode | X3DExternProtoDeclaration | X3DProtoDeclaration>
+* SFNode
+* X3DExternProtoDeclaration
+* X3DProtoDeclaration
+
 ## Find
 
 There is a method `find` on some classes listed here:

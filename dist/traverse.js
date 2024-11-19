@@ -71,6 +71,7 @@ function createTraverse (X3D)
          {
             case object instanceof X3D .X3DExecutionContext:
                return this .#traverseScene (object, flags, seen);
+            case object instanceof X3D .NamedNodesArray:
             case object instanceof X3D .ExternProtoDeclarationArray:
             case object instanceof X3D .ProtoDeclarationArray:
             case object instanceof X3D .MFNode:
