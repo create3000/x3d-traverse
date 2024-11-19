@@ -1,4 +1,4 @@
-const objects = new WeakMap ();
+const traverses = new WeakMap ();
 
 function createTraverse (X3D)
 {
@@ -440,12 +440,12 @@ function createTraverse (X3D)
 
    // Finish
 
-   objects .set (X3D, Traverse);
+   traverses .set (X3D, Traverse);
 
    return Traverse;
 }
 
 export default function (X3D)
 {
-   return objects .get (X3D) ?? createTraverse (X3D);
+   return traverses .get (X3D) ?? createTraverse (X3D);
 };
