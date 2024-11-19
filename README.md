@@ -49,7 +49,7 @@ for (const node of scene .rootNodes .traverse ())
 
 ## Traverse
 
-There is a method `traverse` on some nodes listed here:
+There is a method `traverse` on some classes listed here:
 
 * `X3DScene.prototype.traverse`
 * `X3DExecutionContext.prototype.traverse`
@@ -77,7 +77,7 @@ The return value is an iterator with all traversed object, which can be of type:
 
 ## Find
 
-There is a method `find` on some nodes listed here:
+There is a method `find` on some classes listed here:
 
 * `X3DScene.prototype.find`
 * `X3DExecutionContext.prototype.find`
