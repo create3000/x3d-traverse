@@ -79,15 +79,16 @@ The return value is an iterator with all traversed object, which can be of type:
 
 There is also a method `Traverse.traverse` with an additional first argument `object`, which can be of type:
 
-* X3DExecutionContext
-* NamedNodesArray
-* ExternProtoDeclarationArray
-* ProtoDeclarationArray
-* MFNode
-* Array <SFNode | X3DExternProtoDeclaration | X3DProtoDeclaration>
-* SFNode
-* X3DExternProtoDeclaration
-* X3DProtoDeclaration
+* `X3DScene`
+* `X3DExecutionContext`
+* `X3DExternProtoDeclaration`
+* `X3DProtoDeclaration`
+* `NamedNodesArray`
+* `ExternProtoDeclarationArray`
+* `ProtoDeclarationArray`
+* `MFNode`
+* `Array <SFNode | X3DExternProtoDeclaration | X3DProtoDeclaration>`
+* `SFNode`
 
 ## Find
 
@@ -113,6 +114,13 @@ The parameter *object can be of type:
 The *flags* parameter is a number `or`ed, for instance like this: `Traverse .ROOT_NODES | Traverse .PROTO_DECLARATIONS`.
 
 The array of found objects contains a list with the `X3DExecutionContext`, the `X3DField` name, maybe the index in the `X3DArrayField`, the `SFNode`, and then everything repeats with the X3DField name.
+
+### Traverse.find (scene: X3DScene, object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>
+
+There is also a method `Traverse.find` with an additional first argument `scene`, which can be of type:
+
+* `X3DScene`
+* `X3DExecutionContext`
 
 ## See Also
 
