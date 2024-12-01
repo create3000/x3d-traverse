@@ -124,4 +124,4 @@ There is also a method `Traverse.find` with an additional first argument `scene`
 
 ## See Also
 
-* [X_ITE](https://create3000.github.io/x_ite/)
+* [X_ITE](https://create3000.github.io/x_ite/) - X3D Browser
