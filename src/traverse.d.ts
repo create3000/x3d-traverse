@@ -2,12 +2,12 @@ import X3D from "x_ite";
 
 export = traverse;
 
-declare function traverse (X3D: typeof X3D): typeof Traverse;
+declare function traverse (X3DObject: typeof X3D): typeof Traverse;
 
 /**
  * Static class Traverse to traverse a X3D scene-graph.
  */
-class Traverse
+declare class Traverse
 {
    static readonly NONE: number;
    static readonly EXTERNPROTO_DECLARATIONS: number;
@@ -23,7 +23,7 @@ class Traverse
    /**
     * Traverse object and return all nodes.
     */
-   static *traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
+   static traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
 
    /**
     * Find all occurrences of object and return all hierarchies.
@@ -53,8 +53,7 @@ type FindObjects = X3D .X3DScene
    | X3D .X3DProtoDeclaration
    | X3D .X3DImportedNode
    | X3D .X3DField
-   | X3D .SFNode
-   | X3D .X3DBaseNode;
+   | X3D .SFNode; // TODO: declare type X3D .X3DBaseNode and add it here.
 
 type FoundObjects = X3D .X3DScene
    | X3D .X3DExecutionContext
