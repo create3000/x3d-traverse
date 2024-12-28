@@ -1,5 +1,9 @@
 # x3d-traverse
 
+[![npm Version](https://badgen.net/npm/v/x3d-traverse)](https://www.npmjs.com/package/x3d-traverse)
+[![npm Downloads](https://badgen.net/npm/dm/x3d-traverse)](https://npmtrends.com/x3d-traverse)
+[![DeepScan grade](https://deepscan.io/api/teams/23540/projects/28574/branches/920517/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=23540&pid=28574&bid=920517)
+
 Traverse X3D nodes and scenes to filter, process and analyze nodes.
 
 ## Installation
