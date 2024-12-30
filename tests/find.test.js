@@ -58,3 +58,24 @@ test ("X3DScene.find field", async () =>
    expect (hierarchies [0] [8]) .toBe (appearanceNode);
    expect (hierarchies [0] [9]) .toBe ("material");
 });
+
+test ("null", async () =>
+{
+   const scene = await browser .createX3DFromString (`
+Group {
+   children [NULL, NULL]
+}
+NULL
+NULL
+Transform { }
+   `);
+
+   const hierarchies = Array .from (scene .find (scene .rootNodes .at (-1)));
+
+   expect (hierarchies) .toHaveLength (1);
+   expect (hierarchies [0]) .toHaveLength (4);
+   expect (hierarchies [0] [0]) .toBe (scene);
+   expect (hierarchies [0] [1]) .toBe ("rootNodes");
+   expect (hierarchies [0] [2]) .toBe (3);
+   expect (hierarchies [0] [3]) .toBe (scene .rootNodes .at (-1));
+});

@@ -58,3 +58,19 @@ test ("MFNode.traverse", async () =>
    expect (nodes2 .filter (node => node instanceof X3D .X3DScene)) .toHaveLength (1);
    expect (nodes2 .filter (node => node instanceof X3D .SFNode) .map (node => node .getNodeTypeName ())) .toEqual (names);
 });
+
+test ("null", async () =>
+{
+   const scene = await browser .createX3DFromString (`
+Group {
+   children [NULL, NULL]
+}
+NULL
+NULL
+   `);
+
+   const nodes = Array .from (scene .rootNodes .traverse ());
+
+   expect (nodes) .toHaveLength (1);
+   expect (nodes [0] .getNodeTypeName ()) .toBe ("Group");
+});
