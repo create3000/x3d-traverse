@@ -317,7 +317,7 @@ function createTraverse (X3D)
          seen .add (node);
          hierarchy .push (node instanceof X3D .X3DNode ? X3D .SFNodeCache .get (node) : node);
 
-         if (node .valueOf () === object .valueOf ())
+         if (node .valueOf () === object ?.valueOf ())
          {
             yield hierarchy .slice ();
          }
