@@ -43,10 +43,10 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "shell-tools": "^1.1.9",
-    "terser-webpack-plugin": "^5.3.11",
+    "terser-webpack-plugin": "^5.3.12",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
-    "x_ite": "^11.2.0",
-    "x_ite-node": "^1.0.29"
+    "x_ite": "^11.2.2",
+    "x_ite-node": "^1.0.31"
   }
 }
