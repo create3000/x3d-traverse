@@ -235,11 +235,7 @@ function createTraverse (X3D)
                hierarchy .push ("externprotos");
 
                for (const [i, externproto] of externprotos .entries ())
-               {
                   yield* this .#findInNode (externproto, object, flags, hierarchy, seen);
-
-                  hierarchy .pop ();
-               }
 
                hierarchy .pop ();
             }

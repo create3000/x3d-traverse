@@ -1,6 +1,6 @@
 {
   "name": "x3d-traverse",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Traverse X3D nodes and scenes to filter, process and analyze nodes.",
   "main": "dist/traverse.js",
   "module": "dist/traverse.mjs",
@@ -46,7 +46,7 @@
     "terser-webpack-plugin": "^5.3.12",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
-    "x_ite": "^11.2.2",
-    "x_ite-node": "^1.0.31"
+    "x_ite": "^11.3.1",
+    "x_ite-node": "^1.0.34"
   }
 }
