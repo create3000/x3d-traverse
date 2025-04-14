@@ -35,7 +35,7 @@
     "XML"
   ],
   "author": "Holger Seelig <holger.seelig@gmail.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/create3000/x3d-traverse/issues"
   },
