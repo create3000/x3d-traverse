@@ -168,23 +168,28 @@ function createTraverse (X3D)
             hierarchy = [ ],
             seen      = new Set ();
 
-         if (object instanceof X3D .SFNode)
+         const objects = new Set ((Array .isArray (object) ? object : [object]) .map (object =>
          {
-            if (object === X3D .SFNodeCache .get (object .getValue ()))
-               object = object .getValue ();
-         }
+            if (object instanceof X3D .SFNode)
+            {
+               if (object === X3D .SFNodeCache .get (object .getValue ()))
+                  return object .getValue () .valueOf ();
+            }
 
-         return this .#findInScene (scene, object, flags, hierarchy, seen);
+            return object;
+         }));
+
+         return this .#findInScene (scene, objects, flags, hierarchy, seen);
       }
 
-      static *#findInScene (executionContext, object, flags, hierarchy, seen)
+      static *#findInScene (executionContext, objects, flags, hierarchy, seen)
       {
          if (!executionContext)
             return;
 
          hierarchy .push (executionContext);
 
-         if (executionContext === object)
+         if (objects .has (executionContext))
          {
             yield hierarchy .slice ();
          }
@@ -197,7 +202,7 @@ function createTraverse (X3D)
                hierarchy .push ("externprotos");
 
                for (const [i, externproto] of externprotos .entries ())
-                  yield* this .#findInNode (externproto, object, flags, hierarchy, seen);
+                  yield* this .#findInNode (externproto, objects, flags, hierarchy, seen);
 
                hierarchy .pop ();
             }
@@ -212,7 +217,7 @@ function createTraverse (X3D)
                {
                   hierarchy .push (i);
 
-                  yield* this .#findInNode (prototype, object, flags, hierarchy, seen);
+                  yield* this .#findInNode (prototype, objects, flags, hierarchy, seen);
 
                   hierarchy .pop ();
                }
@@ -230,7 +235,7 @@ function createTraverse (X3D)
                {
                   hierarchy .push (i);
 
-                  yield* this .#findInNode (rootNode ?.getValue (), object, flags, hierarchy, seen);
+                  yield* this .#findInNode (rootNode ?.getValue (), objects, flags, hierarchy, seen);
 
                   hierarchy .pop ();
                }
@@ -247,7 +252,7 @@ function createTraverse (X3D)
                   hierarchy .push (i);
                   hierarchy .push (importedNode);
 
-                  if (importedNode === object)
+                  if (objects .has (importedNode))
                   {
                      yield hierarchy .slice ();
                   }
@@ -257,7 +262,7 @@ function createTraverse (X3D)
                      {
                         const exportedNode = importedNode .getExportedNode ();
 
-                        yield* this .#findInNode (exportedNode, object, flags, hierarchy, seen);
+                        yield* this .#findInNode (exportedNode, objects, flags, hierarchy, seen);
                      }
                      catch (error)
                      {
@@ -276,7 +281,7 @@ function createTraverse (X3D)
          hierarchy .pop ();
       }
 
-      static *#findInNode (node, object, flags, hierarchy, seen)
+      static *#findInNode (node, objects, flags, hierarchy, seen)
       {
          if (!node)
             return;
@@ -287,7 +292,7 @@ function createTraverse (X3D)
          seen .add (node);
          hierarchy .push (node instanceof X3D .X3DNode ? X3D .SFNodeCache .get (node) : node);
 
-         if (node .valueOf () === object ?.valueOf ())
+         if (objects .has (node .valueOf ()))
          {
             yield hierarchy .slice ();
          }
@@ -295,8 +300,8 @@ function createTraverse (X3D)
          {
             if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
             {
-               yield* this .#findInFields (node .getUserDefinedFields (), object, flags, hierarchy, seen);
-               yield* this .#findInFields (node .getPredefinedFields (),  object, flags, hierarchy, seen);
+               yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
+               yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);
             }
 
             const type = node .getType ();
@@ -308,28 +313,28 @@ function createTraverse (X3D)
                   case X3D .X3DConstants .X3DExternProtoDeclaration:
                   {
                      if (flags & this .EXTERNPROTO_DECLARATION_SCENE)
-                        yield* this .#findInScene (node .getInternalScene (), object, flags, hierarchy, seen);
+                        yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
                      break;
                   }
                   case X3D .X3DConstants .X3DProtoDeclaration:
                   {
                      if (flags & this .PROTO_DECLARATION_BODY)
-                        yield* this .#findInScene (node .getBody (), object, flags, hierarchy, seen);
+                        yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
 
                      break;
                   }
                   case X3D .X3DConstants .X3DPrototypeInstance:
                   {
                      if (flags & this .PROTOTYPE_INSTANCES)
-                        yield* this .#findInScene (node .getBody (), object, flags, hierarchy, seen);
+                        yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
 
                      break;
                   }
                   case X3D .X3DConstants .Inline:
                   {
                      if (flags & this .INLINE_SCENE)
-                        yield* this .#findInScene (node .getInternalScene (), object, flags, hierarchy, seen);
+                        yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
                      break
                   }
@@ -343,13 +348,13 @@ function createTraverse (X3D)
          seen .delete (node);
       }
 
-      static *#findInFields (fields, object, flags, hierarchy, seen)
+      static *#findInFields (fields, objects, flags, hierarchy, seen)
       {
          for (const field of fields)
          {
             hierarchy .push (field .getName ());
 
-            if (field === object)
+            if (objects .has (field))
             {
                yield hierarchy .slice ();
             }
@@ -359,7 +364,7 @@ function createTraverse (X3D)
                {
                   case X3D .X3DConstants .SFNode:
                   {
-                     yield* this .#findInNode (field .getValue (), object, flags, hierarchy, seen);
+                     yield* this .#findInNode (field .getValue (), objects, flags, hierarchy, seen);
                      break;
                   }
                   case X3D .X3DConstants .MFNode:
@@ -368,7 +373,7 @@ function createTraverse (X3D)
                      {
                         hierarchy .push (i);
 
-                        yield* this .#findInNode (node ?.getValue (), object, flags, hierarchy, seen);
+                        yield* this .#findInNode (node ?.getValue (), objects, flags, hierarchy, seen);
 
                         hierarchy .pop ();
                      }
@@ -429,9 +434,9 @@ function createTraverse (X3D)
 
    // Add find to classes.
 
-   X3D .X3DExecutionContext .prototype .find = function (object, flags = Traverse .ROOT_NODES)
+   X3D .X3DExecutionContext .prototype .find = function (objects, flags = Traverse .ROOT_NODES)
    {
-      return Traverse .find (this, object, flags);
+      return Traverse .find (this, objects, flags);
    };
 
    // Finish

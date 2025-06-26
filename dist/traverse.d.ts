@@ -26,9 +26,9 @@ declare class Traverse
    static traverse (object: TraverseObjects, flags?: number): Iterable <TraversedObjects>;
 
    /**
-    * Find all occurrences of object and return all hierarchies.
+    * Find all occurrences of object(s) and return all hierarchies.
     */
-   static find (scene: X3D .X3DScene, object: FindObjects, flags?: number): Iterable <Array <FoundObjects>>;
+   static find (scene: X3D .X3DScene, object: FindObjects | Array <FindObjects>, flags?: number): Iterable <Array <FoundObjects>>;
 }
 
 type TraverseObjects = X3D .X3DScene

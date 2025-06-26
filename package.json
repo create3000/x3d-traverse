@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/create3000/x3d-traverse#readme",
   "devDependencies": {
-    "jest": "^29.7.0",
+    "jest": "^30.0.3",
     "shell-tools": "^1.1.9",
     "terser-webpack-plugin": "^5.3.14",
     "webpack": "^5.99.8",

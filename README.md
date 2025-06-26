@@ -101,7 +101,7 @@ There is a method `find` on some classes listed here:
 * `X3DScene.prototype.find`
 * `X3DExecutionContext.prototype.find`
 
-### find (object: FindObjects, flags?: number): Iterable \<Array \<FoundObjects\>\>
+### find (object: FindObjects | Array \<FindObjects\>, flags?: number): Iterable \<Array \<FoundObjects\>\>
 
 Traverse all objects and its successors. Returns an array of all paths of the object to be found.
 
@@ -119,7 +119,7 @@ The *flags* parameter is a number `or`ed, for instance like this: `Traverse .ROO
 
 The array of found objects contains a list with the `X3DExecutionContext`, the `X3DField` name, maybe the index in the `X3DArrayField`, the `SFNode`, and then everything repeats with the X3DField name.
 
-### Traverse.find (scene: X3DScene, object: FindObjects, flags?: number): Iterable \<Array \<FoundObjects\>\>
+### Traverse.find (scene: X3DScene, object: FindObjects | Array \<FindObjects\>, flags?: number): Iterable \<Array \<FoundObjects\>\>
 
 There is also a method `Traverse.find` with an additional first argument `scene`, which can be of type:
 
