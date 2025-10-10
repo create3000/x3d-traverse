@@ -1,6 +1,6 @@
 {
   "name": "x3d-traverse",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Traverse X3D nodes and scenes to filter, process and analyze nodes.",
   "main": "dist/traverse.js",
   "module": "dist/traverse.mjs",
@@ -41,12 +41,12 @@
   },
   "homepage": "https://github.com/create3000/x3d-traverse#readme",
   "devDependencies": {
-    "jest": "^30.0.3",
+    "jest": "^30.2.0",
     "shell-tools": "^1.1.9",
     "terser-webpack-plugin": "^5.3.14",
-    "webpack": "^5.99.8",
+    "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1",
-    "x_ite": "^12.0.6",
-    "x_ite-node": "^1.0.52"
+    "x_ite": "^12.1.1",
+    "x_ite-node": "^1.1.5"
   }
 }
