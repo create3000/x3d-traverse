@@ -115,12 +115,12 @@ function createTraverse (X3D)
 
       static *#traverseNode (node, flags, seen)
       {
-         if (!node)
-            return;
-
          const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
 
-         node = node .valueOf ();
+         node = node ?.valueOf ();
+
+         if (!node)
+            return;
 
          if (seen .has (node))
             return;
@@ -330,12 +330,12 @@ function createTraverse (X3D)
 
       static *#findInNode (node, objects, flags, hierarchy, seen)
       {
-         if (!node)
-            return;
-
          const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
 
-         node = node .valueOf ();
+         node = node ?.valueOf ();
+
+         if (!node)
+            return;
 
          if (seen .has (node))
             return;
