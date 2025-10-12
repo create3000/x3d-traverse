@@ -102,8 +102,6 @@ function createTraverse (X3D)
 
       static *#traverseNode (node, flags, seen)
       {
-         const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
-
          node = node ?.valueOf ();
 
          if (!node)
@@ -113,6 +111,8 @@ function createTraverse (X3D)
             return;
 
          seen .add (node);
+
+         const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
 
          if (!proxy || flags & this .IMPORTED_NODE_PROXIES)
          {
@@ -317,8 +317,6 @@ function createTraverse (X3D)
 
       static *#findInNode (node, objects, flags, hierarchy, seen)
       {
-         const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
-
          node = node ?.valueOf ();
 
          if (!node)
@@ -338,6 +336,8 @@ function createTraverse (X3D)
          {
             if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
             {
+               const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
+
                if (!proxy || flags & this .IMPORTED_NODE_PROXIES)
                {
                   yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
