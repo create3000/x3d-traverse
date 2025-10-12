@@ -31,10 +31,9 @@ function createTraverse (X3D)
             case object instanceof X3D .NamedNodesArray:
             case object instanceof X3D .ExternProtoDeclarationArray:
             case object instanceof X3D .ProtoDeclarationArray:
+            case object instanceof X3D .MFNode:
             case Array .isArray (object):
                return this .#traverseNodes (object, flags, seen);
-            case object instanceof X3D .MFNode:
-               return this .#traverseNodes (object .getValue (), flags, seen);
             case object instanceof X3D .SFNode:
                return this .#traverseNode (object .getValue (), flags, seen);
             case object instanceof X3D .X3DBaseNode:
@@ -61,7 +60,7 @@ function createTraverse (X3D)
 
          if (flags & Traverse .ROOT_NODES)
          {
-            yield* this .#traverseNodes (executionContext .rootNodes .getValue (), flags, seen);
+            yield* this .#traverseNodes (executionContext .rootNodes, flags, seen);
          }
 
          yield executionContext;
@@ -164,7 +163,7 @@ function createTraverse (X3D)
                }
                case X3D .X3DConstants .MFNode:
                {
-                  yield* this .#traverseNodes (field .getValue (), flags, seen);
+                  yield* this .#traverseNodes (field, flags, seen);
                   break;
                }
             }
@@ -240,7 +239,7 @@ function createTraverse (X3D)
 
                hierarchy .push ("rootNodes");
 
-               for (const [i, rootNode] of rootNodes .getValue () .entries ())
+               for (const [i, rootNode] of rootNodes .entries ())
                {
                   hierarchy .push (i);
 
@@ -385,7 +384,7 @@ function createTraverse (X3D)
                   }
                   case X3D .X3DConstants .MFNode:
                   {
-                     for (const [i, node] of field .getValue () .entries ())
+                     for (const [i, node] of field .entries ())
                      {
                         hierarchy .push (i);
 
