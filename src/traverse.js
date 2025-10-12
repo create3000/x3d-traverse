@@ -243,7 +243,7 @@ function createTraverse (X3D)
                {
                   hierarchy .push (i);
 
-                  yield* this .#findInNode (rootNode .getValue (), objects, flags, hierarchy, seen);
+                  yield* this .#findInNode (rootNode ?.getValue (), objects, flags, hierarchy, seen);
 
                   hierarchy .pop ();
                }
@@ -388,7 +388,7 @@ function createTraverse (X3D)
                      {
                         hierarchy .push (i);
 
-                        yield* this .#findInNode (node .getValue (), objects, flags, hierarchy, seen);
+                        yield* this .#findInNode (node ?.getValue (), objects, flags, hierarchy, seen);
 
                         hierarchy .pop ();
                      }
