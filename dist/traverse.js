@@ -114,8 +114,6 @@ function createTraverse (X3D)
 
       static *#traverseNode (node, flags, seen)
       {
-         node = node ?.valueOf ();
-
          if (!node)
             return;
 
@@ -329,8 +327,6 @@ function createTraverse (X3D)
 
       static *#findInNode (node, objects, flags, hierarchy, seen)
       {
-         node = node ?.valueOf ();
-
          if (!node)
             return;
 
