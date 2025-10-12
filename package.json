@@ -1,6 +1,6 @@
 {
   "name": "x3d-traverse",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Traverse X3D nodes and scenes to filter, process and analyze nodes.",
   "main": "dist/traverse.js",
   "module": "dist/traverse.mjs",
