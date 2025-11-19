@@ -41,6 +41,10 @@
     "url": "https://github.com/create3000/x3d-traverse/issues"
   },
   "homepage": "https://github.com/create3000/x3d-traverse#readme",
+  "funding": {
+    "type": "patreon",
+    "url": "https://patreon.com/X_ITE"
+  },
   "devDependencies": {
     "jest": "^30.2.0",
     "shell-tools": "^1.1.9",
