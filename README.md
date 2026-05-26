@@ -17,7 +17,7 @@ npm i x3d-traverse
 ### Browser
 
 ```js
-import traverse from "https://cdn.jsdelivr.net/npm/x3d-traverse@latest/dist/x3d-traverse.mjs";
+import Traverse from "https://cdn.jsdelivr.net/npm/x3d-traverse@latest/dist/x3d-traverse.mjs";
 ```
 
 ## Usage
