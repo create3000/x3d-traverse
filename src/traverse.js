@@ -1,95 +1,316 @@
-const traverses = new WeakMap ();
+const X3D = window [Symbol .for ("X_ITE.X3D")];
 
-function createTraverse (X3D)
+// class Traverse
+
+let flags = 1;
+
+class Traverse
 {
-   // class Traverse
+   static NONE                          = 0;
+   static EXTERNPROTO_DECLARATIONS      = flags;
+   static PROTO_DECLARATIONS            = flags <<= 1;
+   static ROOT_NODES                    = flags <<= 1;
+   static IMPORTED_NODES                = flags <<= 1;
+   static IMPORTED_ROOT_NODES           = flags <<= 1;
+   static EXTERNPROTO_DECLARATION_SCENE = flags <<= 1;
+   static PROTO_DECLARATION_BODY        = flags <<= 1;
+   static PROTOTYPE_INSTANCES           = flags <<= 1;
+   static INLINE_SCENE                  = flags <<= 1;
+   static ALL                           = (flags << 1) - 1;
 
-   let flags = 1;
-
-   class Traverse
+   static traverse (object, flags = this .NONE)
    {
-      static NONE                          = 0;
-      static EXTERNPROTO_DECLARATIONS      = flags;
-      static PROTO_DECLARATIONS            = flags <<= 1;
-      static ROOT_NODES                    = flags <<= 1;
-      static IMPORTED_NODES                = flags <<= 1;
-      static IMPORTED_ROOT_NODES           = flags <<= 1;
-      static EXTERNPROTO_DECLARATION_SCENE = flags <<= 1;
-      static PROTO_DECLARATION_BODY        = flags <<= 1;
-      static PROTOTYPE_INSTANCES           = flags <<= 1;
-      static INLINE_SCENE                  = flags <<= 1;
-      static ALL                           = (flags << 1) - 1;
+      const seen = new Set ();
 
-      static traverse (object, flags = this .NONE)
+      switch (true)
       {
-         const seen = new Set ();
+         case object instanceof X3D .X3DExecutionContext:
+            return this .#traverseScene (object, flags, seen);
+         case object instanceof X3D .NamedNodesArray:
+         case object instanceof X3D .ExternProtoDeclarationArray:
+         case object instanceof X3D .ProtoDeclarationArray:
+         case object instanceof X3D .MFNode:
+         case Array .isArray (object):
+            return this .#traverseNodes (object, flags, seen);
+         case object instanceof X3D .SFNode:
+            return this .#traverseNode (object .getValue (), flags, seen);
+         case object instanceof X3D .X3DBaseNode:
+            return this .#traverseNode (object, flags, seen);
+      }
+   }
 
-         switch (true)
+   static *#traverseScene (executionContext, flags, seen)
+   {
+      if (!executionContext)
+         return;
+
+      if (flags & Traverse .EXTERNPROTO_DECLARATIONS)
+      {
+         for (const externproto of executionContext .externprotos)
+            yield* this .#traverseNode (externproto, flags, seen);
+      }
+
+      if (flags & Traverse .PROTO_DECLARATIONS)
+      {
+         for (const proto of executionContext .protos)
+            yield* this .#traverseNode (proto, flags, seen);
+      }
+
+      if (flags & Traverse .ROOT_NODES)
+      {
+         yield* this .#traverseNodes (executionContext .rootNodes, flags, seen);
+      }
+
+      yield executionContext;
+   }
+
+   static *#traverseNodes (nodes, flags, seen)
+   {
+      for (const node of nodes)
+      {
+         yield* this .#traverseNode (node instanceof X3D .SFNode ? node .getValue () : node, flags, seen);
+      }
+   }
+
+   static *#traverseNode (node, flags, seen)
+   {
+      if (!node)
+         return;
+
+      if (seen .has (node))
+         return;
+
+      seen .add (node);
+
+      const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
+
+      if (!proxy || flags & this .IMPORTED_ROOT_NODES)
+      {
+         yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
+         yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
+      }
+
+      const type = node .getType ();
+
+      for (let t = type .length - 1; t >= 0; -- t)
+      {
+         switch (type [t])
          {
-            case object instanceof X3D .X3DExecutionContext:
-               return this .#traverseScene (object, flags, seen);
-            case object instanceof X3D .NamedNodesArray:
-            case object instanceof X3D .ExternProtoDeclarationArray:
-            case object instanceof X3D .ProtoDeclarationArray:
-            case object instanceof X3D .MFNode:
-            case Array .isArray (object):
-               return this .#traverseNodes (object, flags, seen);
-            case object instanceof X3D .SFNode:
-               return this .#traverseNode (object .getValue (), flags, seen);
-            case object instanceof X3D .X3DBaseNode:
-               return this .#traverseNode (object, flags, seen);
+            case X3D .X3DConstants .X3DExternProtoDeclaration:
+            {
+               if (flags & this .EXTERNPROTO_DECLARATION_SCENE)
+               {
+                  yield* this .#traverseScene (node .getInternalScene (), flags, seen);
+               }
+
+               break;
+            }
+            case X3D .X3DConstants .X3DProtoDeclaration:
+            {
+               if (flags & Traverse .PROTO_DECLARATION_BODY)
+               {
+                  yield* this .#traverseScene (node .getBody (), flags, seen);
+               }
+
+               break;
+            }
+            case X3D .X3DConstants .X3DPrototypeInstance:
+            {
+               if (flags & Traverse .PROTOTYPE_INSTANCES)
+               {
+                  yield* this .#traverseScene (node .getBody (), flags, seen);
+               }
+
+               break;
+            }
+            case X3D .X3DConstants .Inline:
+            {
+               if (flags & this .INLINE_SCENE)
+               {
+                  yield* this .#traverseScene (node .getInternalScene (), flags, seen);
+               }
+
+               break;
+            }
+            default:
+            {
+               continue;
+            }
+         }
+
+         break;
+      }
+
+      yield node instanceof X3D .X3DNode
+         ? X3D .SFNodeCache .get (node)
+         : node;
+   }
+
+   static *#traverseFields (fields, flags, seen)
+   {
+      for (const field of fields)
+      {
+         switch (field .getType ())
+         {
+            case X3D .X3DConstants .SFNode:
+            {
+               yield* this .#traverseNode (field .getValue (), flags, seen);
+               break;
+            }
+            case X3D .X3DConstants .MFNode:
+            {
+               yield* this .#traverseNodes (field, flags, seen);
+               break;
+            }
+         }
+      }
+   }
+
+   static find (scene, object, flags = this .NONE)
+   {
+      const
+         hierarchy = [ ],
+         seen      = new Set ();
+
+      const objects = new Set ((Array .isArray (object) ? object : [object]) .map (object =>
+      {
+         if (object instanceof X3D .SFNode)
+         {
+            if (object === X3D .SFNodeCache .get (object .getValue ()))
+               return object .getValue () .valueOf ();
+         }
+
+         return object;
+      }));
+
+      return this .#findInScene (scene, objects, flags, hierarchy, seen);
+   }
+
+   static *#findInScene (executionContext, objects, flags, hierarchy, seen)
+   {
+      if (!executionContext)
+         return;
+
+      hierarchy .push (executionContext);
+
+      if (objects .has (executionContext))
+      {
+         yield hierarchy .slice ();
+      }
+      else
+      {
+         if (flags & this .EXTERNPROTO_DECLARATIONS)
+         {
+            const externprotos = executionContext .getExternProtoDeclarations ();
+
+            hierarchy .push ("externprotos");
+
+            for (const [i, externproto] of externprotos .entries ())
+               yield* this .#findInNode (externproto, objects, flags, hierarchy, seen);
+
+            hierarchy .pop ();
+         }
+
+         if (flags & this .PROTO_DECLARATIONS)
+         {
+            const prototypes = executionContext .getProtoDeclarations ();
+
+            hierarchy .push ("protos");
+
+            for (const [i, prototype] of prototypes .entries ())
+            {
+               hierarchy .push (i);
+
+               yield* this .#findInNode (prototype, objects, flags, hierarchy, seen);
+
+               hierarchy .pop ();
+            }
+
+            hierarchy .pop ();
+         }
+
+         if (flags & this .ROOT_NODES)
+         {
+            const rootNodes = executionContext .getRootNodes ();
+
+            hierarchy .push ("rootNodes");
+
+            for (const [i, rootNode] of rootNodes .entries ())
+            {
+               hierarchy .push (i);
+
+               yield* this .#findInNode (rootNode ?.getValue (), objects, flags, hierarchy, seen);
+
+               hierarchy .pop ();
+            }
+
+            hierarchy .pop ();
+         }
+
+         if (flags & this .IMPORTED_NODES)
+         {
+            hierarchy .push ("importedNodes");
+
+            for (const [i, importedNode] of executionContext .getImportedNodes () .entries ())
+            {
+               hierarchy .push (i);
+               hierarchy .push (importedNode);
+
+               if (objects .has (importedNode))
+               {
+                  yield hierarchy .slice ();
+               }
+               else
+               {
+                  try
+                  {
+                     const exportedNode = importedNode .getExportedNode ();
+
+                     yield* this .#findInNode (exportedNode, objects, flags, hierarchy, seen);
+                  }
+                  catch (error)
+                  {
+                     //console .log (error .message)
+                  }
+               }
+
+               hierarchy .pop ();
+               hierarchy .pop ();
+            }
+
+            hierarchy .pop ();
          }
       }
 
-      static *#traverseScene (executionContext, flags, seen)
+      hierarchy .pop ();
+   }
+
+   static *#findInNode (node, objects, flags, hierarchy, seen)
+   {
+      if (!node)
+         return;
+
+      if (seen .has (node))
+         return;
+
+      seen .add (node);
+      hierarchy .push (node instanceof X3D .X3DNode ? X3D .SFNodeCache .get (node) : node);
+
+      if (objects .has (node .valueOf ()))
       {
-         if (!executionContext)
-            return;
-
-         if (flags & Traverse .EXTERNPROTO_DECLARATIONS)
-         {
-            for (const externproto of executionContext .externprotos)
-               yield* this .#traverseNode (externproto, flags, seen);
-         }
-
-         if (flags & Traverse .PROTO_DECLARATIONS)
-         {
-            for (const proto of executionContext .protos)
-               yield* this .#traverseNode (proto, flags, seen);
-         }
-
-         if (flags & Traverse .ROOT_NODES)
-         {
-            yield* this .#traverseNodes (executionContext .rootNodes, flags, seen);
-         }
-
-         yield executionContext;
+         yield hierarchy .slice ();
       }
-
-      static *#traverseNodes (nodes, flags, seen)
+      else
       {
-         for (const node of nodes)
+         if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
          {
-            yield* this .#traverseNode (node instanceof X3D .SFNode ? node .getValue () : node, flags, seen);
-         }
-      }
+            const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
 
-      static *#traverseNode (node, flags, seen)
-      {
-         if (!node)
-            return;
-
-         if (seen .has (node))
-            return;
-
-         seen .add (node);
-
-         const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
-
-         if (!proxy || flags & this .IMPORTED_ROOT_NODES)
-         {
-            yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
-            yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
+            if (!proxy || flags & this .IMPORTED_ROOT_NODES)
+            {
+               yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
+               yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);
+            }
          }
 
          const type = node .getType ();
@@ -101,363 +322,130 @@ function createTraverse (X3D)
                case X3D .X3DConstants .X3DExternProtoDeclaration:
                {
                   if (flags & this .EXTERNPROTO_DECLARATION_SCENE)
-                  {
-                     yield* this .#traverseScene (node .getInternalScene (), flags, seen);
-                  }
+                     yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
                   break;
                }
                case X3D .X3DConstants .X3DProtoDeclaration:
                {
-                  if (flags & Traverse .PROTO_DECLARATION_BODY)
-                  {
-                     yield* this .#traverseScene (node .getBody (), flags, seen);
-                  }
+                  if (flags & this .PROTO_DECLARATION_BODY)
+                     yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
 
                   break;
                }
                case X3D .X3DConstants .X3DPrototypeInstance:
                {
-                  if (flags & Traverse .PROTOTYPE_INSTANCES)
-                  {
-                     yield* this .#traverseScene (node .getBody (), flags, seen);
-                  }
+                  if (flags & this .PROTOTYPE_INSTANCES)
+                     yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
 
                   break;
                }
                case X3D .X3DConstants .Inline:
                {
                   if (flags & this .INLINE_SCENE)
-                  {
-                     yield* this .#traverseScene (node .getInternalScene (), flags, seen);
-                  }
+                     yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
-                  break;
+                  break
                }
                default:
-               {
-                  continue;
-               }
+                  break;
             }
-
-            break;
          }
-
-         yield node instanceof X3D .X3DNode
-            ? X3D .SFNodeCache .get (node)
-            : node;
       }
 
-      static *#traverseFields (fields, flags, seen)
+      hierarchy .pop ();
+      seen .delete (node);
+   }
+
+   static *#findInFields (fields, objects, flags, hierarchy, seen)
+   {
+      for (const field of fields)
       {
-         for (const field of fields)
+         hierarchy .push (field .getName ());
+
+         if (objects .has (field))
+         {
+            yield hierarchy .slice ();
+         }
+         else
          {
             switch (field .getType ())
             {
                case X3D .X3DConstants .SFNode:
                {
-                  yield* this .#traverseNode (field .getValue (), flags, seen);
+                  yield* this .#findInNode (field .getValue (), objects, flags, hierarchy, seen);
                   break;
                }
                case X3D .X3DConstants .MFNode:
                {
-                  yield* this .#traverseNodes (field, flags, seen);
+                  for (const [i, node] of field .entries ())
+                  {
+                     hierarchy .push (i);
+
+                     yield* this .#findInNode (node ?.getValue (), objects, flags, hierarchy, seen);
+
+                     hierarchy .pop ();
+                  }
+
                   break;
                }
-            }
-         }
-      }
-
-      static find (scene, object, flags = this .NONE)
-      {
-         const
-            hierarchy = [ ],
-            seen      = new Set ();
-
-         const objects = new Set ((Array .isArray (object) ? object : [object]) .map (object =>
-         {
-            if (object instanceof X3D .SFNode)
-            {
-               if (object === X3D .SFNodeCache .get (object .getValue ()))
-                  return object .getValue () .valueOf ();
-            }
-
-            return object;
-         }));
-
-         return this .#findInScene (scene, objects, flags, hierarchy, seen);
-      }
-
-      static *#findInScene (executionContext, objects, flags, hierarchy, seen)
-      {
-         if (!executionContext)
-            return;
-
-         hierarchy .push (executionContext);
-
-         if (objects .has (executionContext))
-         {
-            yield hierarchy .slice ();
-         }
-         else
-         {
-            if (flags & this .EXTERNPROTO_DECLARATIONS)
-            {
-               const externprotos = executionContext .getExternProtoDeclarations ();
-
-               hierarchy .push ("externprotos");
-
-               for (const [i, externproto] of externprotos .entries ())
-                  yield* this .#findInNode (externproto, objects, flags, hierarchy, seen);
-
-               hierarchy .pop ();
-            }
-
-            if (flags & this .PROTO_DECLARATIONS)
-            {
-               const prototypes = executionContext .getProtoDeclarations ();
-
-               hierarchy .push ("protos");
-
-               for (const [i, prototype] of prototypes .entries ())
-               {
-                  hierarchy .push (i);
-
-                  yield* this .#findInNode (prototype, objects, flags, hierarchy, seen);
-
-                  hierarchy .pop ();
-               }
-
-               hierarchy .pop ();
-            }
-
-            if (flags & this .ROOT_NODES)
-            {
-               const rootNodes = executionContext .getRootNodes ();
-
-               hierarchy .push ("rootNodes");
-
-               for (const [i, rootNode] of rootNodes .entries ())
-               {
-                  hierarchy .push (i);
-
-                  yield* this .#findInNode (rootNode ?.getValue (), objects, flags, hierarchy, seen);
-
-                  hierarchy .pop ();
-               }
-
-               hierarchy .pop ();
-            }
-
-            if (flags & this .IMPORTED_NODES)
-            {
-               hierarchy .push ("importedNodes");
-
-               for (const [i, importedNode] of executionContext .getImportedNodes () .entries ())
-               {
-                  hierarchy .push (i);
-                  hierarchy .push (importedNode);
-
-                  if (objects .has (importedNode))
-                  {
-                     yield hierarchy .slice ();
-                  }
-                  else
-                  {
-                     try
-                     {
-                        const exportedNode = importedNode .getExportedNode ();
-
-                        yield* this .#findInNode (exportedNode, objects, flags, hierarchy, seen);
-                     }
-                     catch (error)
-                     {
-                        //console .log (error .message)
-                     }
-                  }
-
-                  hierarchy .pop ();
-                  hierarchy .pop ();
-               }
-
-               hierarchy .pop ();
+               default:
+                  break;
             }
          }
 
          hierarchy .pop ();
-      }
-
-      static *#findInNode (node, objects, flags, hierarchy, seen)
-      {
-         if (!node)
-            return;
-
-         if (seen .has (node))
-            return;
-
-         seen .add (node);
-         hierarchy .push (node instanceof X3D .X3DNode ? X3D .SFNodeCache .get (node) : node);
-
-         if (objects .has (node .valueOf ()))
-         {
-            yield hierarchy .slice ();
-         }
-         else
-         {
-            if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
-            {
-               const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
-
-               if (!proxy || flags & this .IMPORTED_ROOT_NODES)
-               {
-                  yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
-                  yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);
-               }
-            }
-
-            const type = node .getType ();
-
-            for (let t = type .length - 1; t >= 0; -- t)
-            {
-               switch (type [t])
-               {
-                  case X3D .X3DConstants .X3DExternProtoDeclaration:
-                  {
-                     if (flags & this .EXTERNPROTO_DECLARATION_SCENE)
-                        yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
-
-                     break;
-                  }
-                  case X3D .X3DConstants .X3DProtoDeclaration:
-                  {
-                     if (flags & this .PROTO_DECLARATION_BODY)
-                        yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
-
-                     break;
-                  }
-                  case X3D .X3DConstants .X3DPrototypeInstance:
-                  {
-                     if (flags & this .PROTOTYPE_INSTANCES)
-                        yield* this .#findInScene (node .getBody (), objects, flags, hierarchy, seen);
-
-                     break;
-                  }
-                  case X3D .X3DConstants .Inline:
-                  {
-                     if (flags & this .INLINE_SCENE)
-                        yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
-
-                     break
-                  }
-                  default:
-                     break;
-               }
-            }
-         }
-
-         hierarchy .pop ();
-         seen .delete (node);
-      }
-
-      static *#findInFields (fields, objects, flags, hierarchy, seen)
-      {
-         for (const field of fields)
-         {
-            hierarchy .push (field .getName ());
-
-            if (objects .has (field))
-            {
-               yield hierarchy .slice ();
-            }
-            else
-            {
-               switch (field .getType ())
-               {
-                  case X3D .X3DConstants .SFNode:
-                  {
-                     yield* this .#findInNode (field .getValue (), objects, flags, hierarchy, seen);
-                     break;
-                  }
-                  case X3D .X3DConstants .MFNode:
-                  {
-                     for (const [i, node] of field .entries ())
-                     {
-                        hierarchy .push (i);
-
-                        yield* this .#findInNode (node ?.getValue (), objects, flags, hierarchy, seen);
-
-                        hierarchy .pop ();
-                     }
-
-                     break;
-                  }
-                  default:
-                     break;
-               }
-            }
-
-            hierarchy .pop ();
-         }
       }
    }
-
-   // Add traverse to classes.
-
-   X3D .X3DExecutionContext .prototype .traverse = function (flags = Traverse .ROOT_NODES)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .X3DExternProtoDeclaration .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .X3DProtoDeclaration .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .NamedNodesArray .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .ProtoDeclarationArray .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .SFNode .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   X3D .MFNode .prototype .traverse = function (flags)
-   {
-      return Traverse .traverse (this, flags);
-   };
-
-   // Add find to classes.
-
-   X3D .X3DExecutionContext .prototype .find = function (objects, flags = Traverse .ROOT_NODES)
-   {
-      return Traverse .find (this, objects, flags);
-   };
-
-   // Finish
-
-   traverses .set (X3D, Traverse);
-
-   return Traverse;
 }
 
-export default function (X3D)
+// Add traverse to classes.
+
+X3D .X3DExecutionContext .prototype .traverse = function (flags = Traverse .ROOT_NODES)
 {
-   return traverses .get (X3D) ?? createTraverse (X3D);
+   return Traverse .traverse (this, flags);
 };
+
+X3D .X3DExternProtoDeclaration .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .X3DProtoDeclaration .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .NamedNodesArray .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .ExternProtoDeclarationArray .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .ProtoDeclarationArray .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .SFNode .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+X3D .MFNode .prototype .traverse = function (flags)
+{
+   return Traverse .traverse (this, flags);
+};
+
+// Add find to classes.
+
+X3D .X3DExecutionContext .prototype .find = function (objects, flags = Traverse .ROOT_NODES)
+{
+   return Traverse .find (this, objects, flags);
+};
+
+export default Traverse;

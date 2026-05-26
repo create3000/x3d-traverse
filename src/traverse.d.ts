@@ -1,8 +1,6 @@
 import X3D from "x_ite";
 
-export = traverse;
-
-declare function traverse (X3DObject: typeof X3D): typeof Traverse;
+export = Traverse;
 
 /**
  * Static class Traverse to traverse a X3D scene-graph.

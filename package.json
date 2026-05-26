@@ -46,12 +46,15 @@
     "url": "https://patreon.com/X_ITE"
   },
   "devDependencies": {
-    "jest": "^30.2.0",
+    "@create3000/jest-electron-runner": "^29.15.2",
     "shell-tools": "^1.1.9",
-    "terser-webpack-plugin": "^5.3.16",
-    "webpack": "^5.104.1",
-    "webpack-cli": "^6.0.1",
-    "x_ite": "^12.2.3",
-    "x_ite-node": "^1.1.19"
+    "terser-webpack-plugin": "^5.6.0",
+    "webpack": "^5.107.2",
+    "webpack-cli": "^7.0.2",
+    "x_ite": "^15.0.3"
+  },
+  "jest": {
+    "runner": "@create3000/jest-electron-runner",
+    "testEnvironment": "@create3000/jest-electron-runner/environment"
   }
 }

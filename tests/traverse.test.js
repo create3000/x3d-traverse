@@ -1,6 +1,6 @@
 const
-   X3D      = require ("x_ite-node"),
-   Traverse = require ("../") (X3D),
+   X3D      = require ("x_ite"),
+   Traverse = require ("../"),
    path     = require ("path"),
    url      = require ("url");
 
