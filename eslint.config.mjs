@@ -1,8 +1,32 @@
-import js from "@eslint/js";
-import globals from "globals";
+import js               from "@eslint/js";
+import globals          from "globals";
 import { defineConfig } from "eslint/config";
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: {...globals.browser, ...globals.node} } },
-  { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
+export default defineConfig ([
+  {
+    files: ["src/**/*.{js,mjs,cjs}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions:
+    {
+      globals: {
+        ... globals .browser,
+        ... globals .jquery,
+      },
+    },
+    rules: {
+      "no-async-promise-executor": "off",
+      "no-empty": ["error", { "allowEmptyCatch": true }],
+      "semi": "error",
+    },
+  },
+  {
+    files: ["build/**/*.{js,mjs,cjs}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions:
+    {
+      globals: globals .node,
+    },
+  },
 ]);
