@@ -1,5 +1,7 @@
+import { expect, test } from "vitest";
+
 const
-   X3D      = require ("x_ite"),
+   X3D      = require ("x_ite-node"),
    Traverse = require ("../"),
    path     = require ("path"),
    url      = require ("url");

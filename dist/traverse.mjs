@@ -371,7 +371,7 @@ class Traverse
                   if (flags & this .INLINE_SCENE)
                      yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
-                  break
+                  break;
                }
                default:
                   break;
