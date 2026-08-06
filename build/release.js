@@ -41,6 +41,10 @@ function main ()
 	systemSync (`git push origin --tags`);
 
 	// npm
+	if (systemSync (`npm whoami > /dev/null 2>&1`))
+	   systemSync (`npm login`);
+
+	// npm
 	systemSync (`npm publish`);
 
 	// development
