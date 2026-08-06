@@ -49,6 +49,7 @@ for (const node of scene .rootNodes .traverse ())
 * `Traverse.PROTO_DECLARATION_BODY`
 * `Traverse.PROTOTYPE_INSTANCES`
 * `Traverse.INLINE_SCENE`
+* `Traverse.INLINE_GEOMETRY_SCENE`
 * `Traverse.ALL`
 
 ## Traverse

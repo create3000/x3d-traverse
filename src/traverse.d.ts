@@ -16,6 +16,7 @@ declare class Traverse
    static readonly PROTO_DECLARATION_BODY: number;
    static readonly PROTOTYPE_INSTANCES: number;
    static readonly INLINE_SCENE: number;
+   static readonly INLINE_GEOMETRY_SCENE: number;
    static readonly ALL: number;
 
    /**

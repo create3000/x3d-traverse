@@ -16,6 +16,7 @@ class Traverse
    static PROTO_DECLARATION_BODY        = flags <<= 1;
    static PROTOTYPE_INSTANCES           = flags <<= 1;
    static INLINE_SCENE                  = flags <<= 1;
+   static INLINE_GEOMETRY_SCENE         = flags <<= 1;
    static ALL                           = (flags << 1) - 1;
 
    static traverse (object, flags = this .NONE)
@@ -132,6 +133,15 @@ class Traverse
 
                break;
             }
+            case X3D .X3DConstants .InlineGeometry:
+            {
+               if (flags & this .INLINE_GEOMETRY_SCENE)
+               {
+                  yield* this .#traverseScene (node .getInternalScene (), flags, seen);
+               }
+
+               break;
+            }
             default:
             {
                continue;
@@ -205,7 +215,7 @@ class Traverse
 
             hierarchy .push ("externprotos");
 
-            for (const [i, externproto] of externprotos .entries ())
+            for (const [, externproto] of externprotos .entries ())
                yield* this .#findInNode (externproto, objects, flags, hierarchy, seen);
 
             hierarchy .pop ();
@@ -268,7 +278,7 @@ class Traverse
 
                      yield* this .#findInNode (exportedNode, objects, flags, hierarchy, seen);
                   }
-                  catch (error)
+                  catch
                   {
                      //console .log (error .message)
                   }
@@ -343,6 +353,13 @@ class Traverse
                case X3D .X3DConstants .Inline:
                {
                   if (flags & this .INLINE_SCENE)
+                     yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
+
+                  break;
+               }
+               case X3D .X3DConstants .InlineGeometry:
+               {
+                  if (flags & this .INLINE_GEOMETRY_SCENE)
                      yield* this .#findInScene (node .getInternalScene (), objects, flags, hierarchy, seen);
 
                   break;
