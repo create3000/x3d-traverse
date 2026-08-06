@@ -59,5 +59,8 @@
   "allowScripts": {
     "fsevents@2.3.3": true,
     "skia-canvas@3.0.8": true
+  },
+  "dependencies": {
+    "x_ite": "^16.0.5"
   }
 }
