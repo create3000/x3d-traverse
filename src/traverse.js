@@ -11,7 +11,7 @@ class Traverse
    static PROTO_DECLARATIONS            = flags <<= 1;
    static ROOT_NODES                    = flags <<= 1;
    static IMPORTED_NODES                = flags <<= 1;
-   static IMPORTED_ROOT_NODES           = flags <<= 1;
+   static IMPORTED_NODE_INSTANCES       = flags <<= 1;
    static EXTERNPROTO_DECLARATION_SCENE = flags <<= 1;
    static PROTO_DECLARATION_BODY        = flags <<= 1;
    static PROTOTYPE_INSTANCES           = flags <<= 1;
@@ -83,9 +83,9 @@ class Traverse
 
       seen .add (node);
 
-      const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
+      const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-      if (!proxy || flags & this .IMPORTED_ROOT_NODES)
+      if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
       {
          yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
          yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
@@ -314,9 +314,9 @@ class Traverse
       {
          if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
          {
-            const proxy = X3D .X3DImportedNodeProxy && (node instanceof X3D .X3DImportedNodeProxy);
+            const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-            if (!proxy || flags & this .IMPORTED_ROOT_NODES)
+            if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
             {
                yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
                yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);
