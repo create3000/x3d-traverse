@@ -83,9 +83,9 @@ class Traverse
 
       seen .add (node);
 
-      const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
+      const importedNodeInstance = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-      if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
+      if (!importedNodeInstance || flags & this .IMPORTED_NODE_INSTANCES)
       {
          yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
          yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
@@ -314,9 +314,9 @@ class Traverse
       {
          if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
          {
-            const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
+            const importedNodeInstance = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-            if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
+            if (!importedNodeInstance || flags & this .IMPORTED_NODE_INSTANCES)
             {
                yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
                yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);

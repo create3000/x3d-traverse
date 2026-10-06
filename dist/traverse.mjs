@@ -3,36 +3,27 @@
 /******/ 
 /************************************************************************/
 /******/ /* webpack/runtime/define property getters */
-/******/ (() => {
-/******/ 	// define getter/value functions for harmony exports
-/******/ 	__webpack_require__.d = (exports, definition) => {
-/******/ 		if(Array.isArray(definition)) {
-/******/ 			var i = 0;
-/******/ 			while(i < definition.length) {
-/******/ 				var key = definition[i++];
-/******/ 				var binding = definition[i++];
-/******/ 				if(!__webpack_require__.o(exports, key)) {
-/******/ 					if(binding === 0) {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
-/******/ 					} else {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: binding });
-/******/ 					}
-/******/ 				} else if(binding === 0) { i++; }
-/******/ 			}
-/******/ 		} else {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ // define getter/value functions for harmony exports
+/******/ __webpack_require__.d = (exports, definition) => {
+/******/ 	if(Array.isArray(definition)) {
+/******/ 		var i = 0;
+/******/ 		while(i < definition.length) {
+/******/ 			var key = definition[i++];
+/******/ 			var binding = definition[i++];
+/******/ 			var descriptor = binding === 0 ? { enumerable: true, value: definition[i++] } : { enumerable: true, get: binding };
+/******/ 			if(!__webpack_require__.o(exports, key)) Object.defineProperty(exports, key, descriptor);
+/******/ 		}
+/******/ 	} else {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
 /******/ 		}
-/******/ 	};
-/******/ })();
+/******/ 	}
+/******/ };
 /******/ 
 /******/ /* webpack/runtime/hasOwnProperty shorthand */
-/******/ (() => {
-/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ })();
+/******/ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
 /******/ 
 /************************************************************************/
 let __webpack_exports__ = {};
@@ -121,9 +112,9 @@ class Traverse
 
       seen .add (node);
 
-      const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
+      const importedNodeInstance = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-      if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
+      if (!importedNodeInstance || flags & this .IMPORTED_NODE_INSTANCES)
       {
          yield* this .#traverseFields (node .getUserDefinedFields (), flags, seen);
          yield* this .#traverseFields (node .getPredefinedFields (),  flags, seen);
@@ -352,9 +343,9 @@ class Traverse
       {
          if (!node .getType () .includes (X3D .X3DConstants .X3DExternProtoDeclaration))
          {
-            const proxy = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
+            const importedNodeInstance = X3D .X3DImportedNodeInstance && (node instanceof X3D .X3DImportedNodeInstance);
 
-            if (!proxy || flags & this .IMPORTED_NODE_INSTANCES)
+            if (!importedNodeInstance || flags & this .IMPORTED_NODE_INSTANCES)
             {
                yield* this .#findInFields (node .getUserDefinedFields (), objects, flags, hierarchy, seen);
                yield* this .#findInFields (node .getPredefinedFields (),  objects, flags, hierarchy, seen);
@@ -506,7 +497,7 @@ X3D .X3DExecutionContext .prototype .find = function (objects, flags = Traverse 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Traverse);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 const __webpack_exports__default = __webpack_exports__.A;
