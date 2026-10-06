@@ -44,7 +44,7 @@ for (const node of scene .rootNodes .traverse ())
 * `Traverse.PROTO_DECLARATIONS`
 * `Traverse.ROOT_NODES`
 * `Traverse.IMPORTED_NODES`
-* `Traverse.IMPORTED_ROOT_NODES`
+* `Traverse.IMPORTED_NODE_INSTANCES`
 * `Traverse.EXTERNPROTO_DECLARATION_SCENE`
 * `Traverse.PROTO_DECLARATION_BODY`
 * `Traverse.PROTOTYPE_INSTANCES`
