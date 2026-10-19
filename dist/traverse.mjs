@@ -1,32 +1,3 @@
-/******/ // The require scope
-/******/ const __webpack_require__ = {};
-/******/ 
-/************************************************************************/
-/******/ /* webpack/runtime/define property getters */
-/******/ // define getter/value functions for harmony exports
-/******/ __webpack_require__.d = (exports, definition) => {
-/******/ 	if(Array.isArray(definition)) {
-/******/ 		var i = 0;
-/******/ 		while(i < definition.length) {
-/******/ 			var key = definition[i++];
-/******/ 			var binding = definition[i++];
-/******/ 			var descriptor = binding === 0 ? { enumerable: true, value: definition[i++] } : { enumerable: true, get: binding };
-/******/ 			if(!__webpack_require__.o(exports, key)) Object.defineProperty(exports, key, descriptor);
-/******/ 		}
-/******/ 	} else {
-/******/ 		for(var key in definition) {
-/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 			}
-/******/ 		}
-/******/ 	}
-/******/ };
-/******/ 
-/******/ /* webpack/runtime/hasOwnProperty shorthand */
-/******/ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
-/******/ 
-/************************************************************************/
-let __webpack_exports__ = {};
 const X3D = window [Symbol .for ("X_ITE.X3D")];
 
 // class Traverse
@@ -496,9 +467,4 @@ X3D .X3DExecutionContext .prototype .find = function (objects, flags = Traverse 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Traverse);
 
-/* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
-/* harmony export */ ]);
-
-const __webpack_exports__default = __webpack_exports__.A;
-export { __webpack_exports__default as default };
+export { __WEBPACK_DEFAULT_EXPORT__ as default };
